@@ -19,29 +19,41 @@
         return props.answer.length
     })
 
-    const inputWatcher = watchEffect(() => {
+    watchEffect(() => {
+        console.log('answer: ' + props.answer)
+        console.log('given answer: ' + givenAnswer.value)
+        if (props.answer == null || givenAnswer.value == null) {
+            console.log('no answer or given answer to evaluate yet')
+            return 
+        }
+        if (props.answer.length != givenAnswer.value.length) {
+            console.log('answer not long enough')
+            return
+        }
+        
         if (verifyWin(props.answer, givenAnswer.value)) {
-            //inputWatcher()
-            //@stephan: my thinking here was to kill the watchEffect once the user "won", however the UI throws if i uncomment the above line
+            givenAnswer.value = ''
         }
     })
 
     function verifyWin(answer, givenAnswer) {
+        
         if (answersMatch(answer, givenAnswer)) {
-            
             emit('win')
             console.log("correct")
-            return true;
         } else {
-            
             emit('lose')
             console.log("wrong")
-            return false;
         }
+
+        return true
     }
 
     function answersMatch(answer, givenAnswer) {
         if (answer == null || givenAnswer == null) {
+            return false
+        }
+        if (answer.length < 1 || givenAnswer.length < 1){
             return false
         }
         return answer.toUpperCase() === givenAnswer.toUpperCase();

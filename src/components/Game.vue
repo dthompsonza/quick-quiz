@@ -12,9 +12,8 @@
             @lose="loseAnswerCallback"
         />
         <Result 
-            :gameOver="state.gameOver" 
-            :winState="state.gameResults.winState" 
-            :text="state.gameResults.text" 
+            :gameOver="gameOver" 
+            :gameResults="gameResults" 
         />
     </div>
     <div class="controls">
@@ -23,59 +22,60 @@
 </template>
 
 <script setup lang="ts">
-    import { reactive, ref } from 'vue'
+    import { ref } from 'vue'
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'
 
-    const state = reactive({
-        questionIndex: -1,
-        questionData: [],
-        gameOver: false,
-        winCount: 0,
-        gameResults: {
+    const isPlaying = ref(false) //true: shows Question&Answer components
+    const questionIndex = ref(-1)
+    const questionData = ref([])
+    const gameOver = ref(false) //true: shows Results component
+    const gameResults = ref({
             winState: false,
             text: ''
-        }
-    })
-
-    const isPlaying = ref(false)
+        })
+    const winCount = ref(0)
     const questionText = ref('')
     const questionImage = ref('')
     const answer = ref('')
     const hint = ref('')
 
     function startGame() {
-        if (isPlaying.value) return
-        state.gameOver = false 
-        state.questionIndex = 0
-        state.questionData = gameSetup.data
+        if (isPlaying.value) {
+            console.log('game already in progres...')
+            return
+        }
+        gameOver.value = false 
+        questionData.value = gameSetup.data
         isPlaying.value = true
-        console.log(state)
         gameTick()
-        console.log(state)
     }
     
     function gameTick() {
-        console.log('gametick')
-        if (state.questionIndex >= state.questionData.length) {
+        console.log('game tick')
+        if (!isPlaying.value){
+            return
+        }
+        if (questionIndex.value >= questionData.value.length) {
             isPlaying.value = false 
-            state.gameResults = calculateWin()
-            state.questionIndex = -1
-            state.questionData = []
-            state.gameOver = true
+            gameResults.value = calculateWin()
+            questionIndex.value = -1
+            questionData.value = []
+            gameOver.value = true
         }
 
-        state.questionIndex++
-        questionText.value = state.questionData[state.questionIndex].questionText
-        answer.value = state.questionData[state.questionIndex].answer 
-        hint.value = state.questionData[state.questionIndex].hint
+        questionIndex.value++
+        console.log('getting question #' + questionIndex.value)
+        questionText.value = questionData.value[questionIndex.value].questionText
+        answer.value = questionData.value[questionIndex.value].answer 
+        hint.value = questionData.value[questionIndex.value].hint
     }
 
     function calculateWin() {
-        let lossCount = state.questionData.length - state.winCount
-        let winState = state.winCount > lossCount
-        let text = winState ? `Well done you got ${state.winCount} correct` : `Aww you got ${lossCount} wrong`
+        let lossCount = questionData.value.length - winCount.value
+        let winState = winCount.value > lossCount
+        let text = winState ? `Well done you got ${winCount.value} correct` : `Aww you got ${lossCount} wrong`
         return { 
             winState: winState,
             text: text
@@ -84,7 +84,7 @@
 
     function winAnswerCallback() {
         console.log('win callback')
-        state.winCount++
+        winCount.value++
         gameTick()
     }
 

@@ -14,9 +14,9 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, watchEffect } from 'vue';
+    import { ref } from 'vue';
 
-    const props = defineProps(['isPlaying', 'questionImage', 'questionText', 'hint'])
+    defineProps(['isPlaying', 'questionImage', 'questionText', 'hint'])
 
     const hintVisible = ref(false)
 

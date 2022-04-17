@@ -1,17 +1,17 @@
 <template>
     <div v-if="gameOver">
-        <div v-if="winState">
+        <div v-if="gameResults.winState">
             Correct
         </div>
         <div v-else>
             Sorry, you lost
         </div>
-        <p>{{ text }}</p>
+        <p>{{ gameResults.text }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
-    const props = defineProps(['gameOver', 'winState', 'text'])
+    const props = defineProps(['gameOver', 'gameResults'])
 
 </script>
 
