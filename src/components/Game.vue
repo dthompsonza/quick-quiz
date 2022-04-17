@@ -27,7 +27,6 @@
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'
-    const emit = defineEmits(['event-win', 'event-lose'])
 
     const state = reactive({
         questionIndex: -1,
