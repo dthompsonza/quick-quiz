@@ -40,6 +40,7 @@
   button {
     padding: 10px;
     margin: 5px;
+    margin-bottom: 15px;
   }
 
 </style>

@@ -1,18 +1,15 @@
 <template>
     <div v-if="gameOver">
-        <div v-if="gameResults.winState">
-            Correct
-        </div>
-        <div v-else>
-            Sorry, you lost
-        </div>
+        <h2>{{ gameResultTitle }}</h2>
         <p>{{ gameResults.text }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
-    const props = defineProps(['gameOver', 'gameResults'])
+    import { computed } from 'vue'
 
+    const props = defineProps(['gameOver', 'gameResults'])
+    const gameResultTitle = computed(() => props.gameResults.winState ? "Winner" : "As You Lost")
 </script>
 
 <style scoped>
