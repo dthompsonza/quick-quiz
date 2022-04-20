@@ -1,17 +1,22 @@
 
 
 <template>
-  <header>
-    <h1>Word Game</h1>
-  </header>
+  <div>
+    <header>
+      <h1>Word Game</h1>
+    </header>
 
-  <main>
-    <Game />
-  </main>
+    <main>
+      <Game />
+    </main>
+  </div>
 </template>
 
 <script setup>
   import Game from './components/Game.vue';
+
+  //const text = ref('')
+
 
 </script>
 

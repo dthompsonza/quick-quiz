@@ -1,27 +1,71 @@
 <template>
     <div v-if="isPlaying">
-        <input class="answerInput" v-model="givenAnswer" :placeholder="placeHolder" :maxlength="maxInputLength" />
+        <input ref="inputTextbox" class="answerInput" v-model="givenAnswer" :maxlength="maxInputLength" />
+         <div>
+            <button @click="handleCheckAnswer" :disabled="!inputLengthIsValid">Check Answer</button>
+            <button @click="showHint" :disabled="hintVisible">Hint</button>
+        </div>
         <div v-if="hintVisible" class="hint">
             <p>{{ hint }}</p>
         </div>
-        <div>
-            <button @click="showHint" :disabled="hintVisible">Hint</button>
-        </div>
+       
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed, ref, watchEffect, watch } from 'vue'
+    import { computed, ref, watch, onMounted } from 'vue'
+
+    const ValidCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
     const emit = defineEmits(['win', 'lose'])
     const props = defineProps(['isPlaying', 'answer', 'hint', 'questionNumber'])
     const givenAnswer = ref('')
     const hintVisible = ref(false)
+    const inputTextbox = ref()
 
-    const placeHolder = computed(() => {
-        return "_".repeat(props.answer.length)
+    const inputLengthIsValid = computed(() => {
+        return props.answer.length === givenAnswer.value.length
     })
 
+    onMounted(() => 
+        window.addEventListener("keypress", function(e) {
+            console.log(e)
+            AppendTextToAnswer(String.fromCharCode(e.keyCode))
+        }.bind(this)))
+
+    onMounted(() => 
+        window.addEventListener("keydown", function(e) {
+            console.log(e)
+            if (['Backspace', 'Delete'].includes(e.key)) {
+                RemoveLastCharFromAnswer()
+            }
+            if (['Enter'].includes(e.key)) {
+                handleCheckAnswer()
+            }
+        }.bind(this)))
+
+    onMounted(() => inputTextbox.value.focus)
+
+    function AppendTextToAnswer(char){
+        if (!props.isPlaying || !ValidCharacters.includes(char)) {
+            return
+        }
+
+        if (givenAnswer.value.length < props.answer.length) {
+            givenAnswer.value += char.toUpperCase()
+        }
+    }
+
+    function RemoveLastCharFromAnswer() {
+        if (!props.isPlaying) {
+            return
+        }
+
+        if (givenAnswer.value.length > 0) {
+            givenAnswer.value = givenAnswer.value.slice(0, -1)
+        }
+    }
+    
     const maxInputLength = computed(() => {
         return props.answer.length
     })
@@ -36,25 +80,13 @@
 
     watch(() => props.questionNumber, (f,s) => hideHint())
 
-    watchEffect(() => {
-        console.log('answer: ' + props.answer)
-        console.log('given answer: ' + givenAnswer.value)
-        if (props.answer == null || givenAnswer.value == null) {
-            console.log('no answer or given answer to evaluate yet')
-            return 
+    function handleCheckAnswer() {
+        if (props.answer.length > 0 && givenAnswer.value.length > 0 && props.answer.length === givenAnswer.value.length) {
+            verifyWin(props.answer, givenAnswer.value)
         }
-        if (props.answer.length != givenAnswer.value.length || props.answer.length < 1 || givenAnswer.value.length < 1) {
-            console.log('answer not long enough')
-            return
-        }
-        
-        if (verifyWin(props.answer, givenAnswer.value)) {
-            givenAnswer.value = ''
-        }
-    })
+    }
 
     function verifyWin(answer, givenAnswer) {
-        
         if (answersMatch(answer, givenAnswer)) {
             emit('win')
             console.log("correct")
@@ -62,7 +94,6 @@
             emit('lose')
             console.log("wrong")
         }
-
         return true
     }
 
@@ -85,5 +116,6 @@
         text-align: center;
         font-size: 54px;
         width: 50%;
+        caret-color: transparent;
     }
 </style>

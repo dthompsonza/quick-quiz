@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed } from 'vue'
+    import { ref, computed, onMounted } from 'vue'
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'
@@ -45,6 +45,8 @@
     const hint = ref('')
     const questionNumber = ref(null)
 
+
+    
     //#region Computed
 
     const showGameBlock = computed(() => isPlaying.value || gameOver.value)
