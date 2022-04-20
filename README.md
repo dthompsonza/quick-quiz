@@ -16,12 +16,21 @@ More coming....
 
 ## To Do
 
-1. Quit Button - Make it work
-2. Cancel Game - Add it and make it work
-3. Get some words and numbers games together. 3 of each with 10 questions apiece, so 3 "words" games with 10 questions each and 3 "numbers" games also with 10 questions each, so 60 questions total
-4. Figure out how to wire up the game to the game data
-5. Get some better styling
-6. Add users 
+1. Quit Button - ~~Make it work~~
+2. Fix game flow
+  * user should type full word and then a "Check Answer" button is enabled
+  * if the user is correct, flash green else flash red (flash can be on the next question and transition to the regular _gameBlock_ background color)
+  * per question record:
+    1. given answer
+    2. win/lose
+    3. TTAQ (time to answer question aka click Check Answer)
+    4. user (future)
+3. Add "Give Up" button to automatically get the answer wrong with no answer recorded
+4. On the Results block, show the list of questions, correct answer, given answer and a ❌ or ✔ to indicate lose or win
+5. Get some words and numbers games together. 3 of each with 10 questions apiece, so 3 "words" games with 10 questions each and 3 "numbers" games also with 10 questions each, so 60 questions total
+6. Figure out how to wire up the game to the game data
+7. Get some better styling
+8. Add users 
 
 ### 6. Add users
 
