@@ -33,7 +33,7 @@
     const isPlaying = ref(false) //true: shows Question&Answer components
     const questionIndex = ref(-1)
     const questionData = ref([])
-    const gameOver = ref(false) //true: shows Results component
+    const gameOver = ref(false) //true: shows Results component 
     const gameResults = ref({
             winState: false,
             text: ''
