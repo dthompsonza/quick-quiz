@@ -1,5 +1,5 @@
 <template>
-    <div class="gameBlock">
+    <div class="gameBlock" v-if="showGameBlock">
         <Question :isPlaying="isPlaying" 
             :questionText="questionText" 
             :questionImage="questionImage" 
@@ -19,13 +19,13 @@
         />
     </div>
     <div class="controls">
-        <button @click="startGame" :disabled="isPlaying">Start Game</button>
-        <button @click="" :disabled="!isPlaying">Quit Game</button>
+        <button @click="handleStartGame" :disabled="isPlaying">Start Game</button>
+        <button @click="handleStopGame" :disabled="!isPlaying">Quit Game</button>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { ref, computed } from 'vue'
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'
@@ -45,6 +45,26 @@
     const hint = ref('')
     const questionNumber = ref(null)
 
+    //#region Computed
+
+    const showGameBlock = computed(() => isPlaying.value || gameOver.value)
+
+    //#endregion
+
+    //#region Button clicks
+
+    function handleStartGame() {
+        startGame()
+    }
+
+    function handleStopGame() {
+        stopGame(true)
+    }
+
+    //#endregion
+
+    //#region Game functions
+
     function startGame() {
         if (isPlaying.value) {
             console.log('game already in progres...')
@@ -63,15 +83,14 @@
         }
         // Check if we've gone through all the questions
         if (questionIndex.value >= questionData.value.length - 1) {
-            console.log('game over')
-            isPlaying.value = false 
-            gameResults.value = calculateWin()
-            questionIndex.value = -1
-            questionData.value = []
-            gameOver.value = true
+            stopGame()
             return
         }
         // Move to the next question
+        advanceToNextQuestion()
+    }
+
+    function advanceToNextQuestion() {
         if (questionIndex.value < questionData.value.length - 1) {
             questionIndex.value++
             console.log('getting question #' + questionIndex.value)
@@ -82,12 +101,26 @@
         }
     }
 
+    function stopGame(isCancelled = false) {
+        console.log('game over')
+        let gameOverResults = calculateWin()
+        isPlaying.value = false 
+        questionText.value = ''
+        answer.value = ''
+        questionNumber.value = ''
+        questionIndex.value = -1
+        questionData.value = []
+        if (isCancelled) {
+            return
+        }
+        gameResults.value = gameOverResults
+        gameOver.value = true
+    }
+
     function calculateWin() {
         let lossCount = questionData.value.length - winCount.value
         let winState = winCount.value > lossCount
-        let winPerc = Math.round((winCount.value / questionData.value.length) * 100)
         let text = winState ? `Well done you got ${winCount.value} correct` : `Aww you got ${lossCount} wrong`
-        text += ` (${winPerc}%)`
         console.log(winState, text)
 
         return { 
@@ -95,6 +128,10 @@
             text: text
         }
     }
+
+    //#endregion
+
+    //#region Callbacks 
 
     function winAnswerCallback() {
         console.log('win callback')
@@ -107,6 +144,10 @@
         gameTick()
     }
     
+    //#endregion 
+
+    //#region Game setup data
+
     let gameSetup = {
         rules : {
             allowHint: true
@@ -175,6 +216,7 @@
         ]
     }
 
+    //#endregion
 
 </script>
     

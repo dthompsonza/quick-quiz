@@ -9,7 +9,7 @@
     import { computed } from 'vue'
 
     const props = defineProps(['gameOver', 'gameResults'])
-    const gameResultTitle = computed(() => props.gameResults.winState ? "Winner" : "As You Lost")
+    const gameResultTitle = computed(() => props.gameResults.winState ? "Winner" : "Aww You Lost")
 </script>
 
 <style scoped>
