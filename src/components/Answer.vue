@@ -38,9 +38,11 @@
             console.log(e)
             if (['Backspace', 'Delete'].includes(e.key)) {
                 RemoveLastCharFromAnswer()
+                e.preventDefault()
             }
             if (['Enter'].includes(e.key)) {
                 handleCheckAnswer()
+                e.preventDefault()
             }
         }.bind(this)))
 
