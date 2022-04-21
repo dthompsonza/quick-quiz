@@ -31,6 +31,12 @@ More coming....
 6. Figure out how to wire up the game to the game data
 7. Get some better styling
 8. Add users 
+9. Forget some of point 2...
+    > Add 20 buttons to the bottom of each answer component, the 20 answers consisting of all the correct characters in the answer + random similar ones
+    > eg,
+    > For words, DOLPHIN could show letters D O L C A R M A L O H P I I A X N A
+    > For sums, 17 x 8 = 136 could show (fewer) 1 1 2 3 4 4 6 7 8 8 9 0
+    > Game setup will explicitly provide a pool of alternatives to cycle through
 
 ### 6. Add users
 
