@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted } from 'vue'
+    import { ref, computed } from 'vue'
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'
@@ -44,8 +44,6 @@
     const answer = ref('')
     const hint = ref('')
     const questionNumber = ref(null)
-
-
     
     //#region Computed
 
@@ -53,7 +51,7 @@
 
     //#endregion
 
-    //#region Button clicks
+    //#region Button events
 
     function handleStartGame() {
         startGame()
@@ -65,7 +63,7 @@
 
     //#endregion
 
-    //#region Game functions
+    //#region Component functions
 
     function startGame() {
         if (isPlaying.value) {
@@ -94,6 +92,7 @@
 
     function advanceToNextQuestion() {
         if (questionIndex.value < questionData.value.length - 1) {
+
             questionIndex.value++
             console.log('getting question #' + questionIndex.value)
             questionText.value = questionData.value[questionIndex.value].questionText
@@ -148,7 +147,7 @@
     
     //#endregion 
 
-    //#region Game setup data
+    //#region Other
 
     let gameSetup = {
         rules : {

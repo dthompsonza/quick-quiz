@@ -76,11 +76,12 @@
         hintVisible.value = true
     }
 
-    function hideHint() {
+    function resetComponent() {
         hintVisible.value = false 
+        givenAnswer.value = ''
     }
 
-    watch(() => props.questionNumber, (f,s) => hideHint())
+    watch(() => props.questionNumber, () => resetComponent())
 
     function handleCheckAnswer() {
         if (props.answer.length > 0 && givenAnswer.value.length > 0 && props.answer.length === givenAnswer.value.length) {
