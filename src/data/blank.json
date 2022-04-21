@@ -1,0 +1,19 @@
+{
+    "name": "",
+    "uniqueid": "",
+    "enabled": false,
+    "questions": [
+        {
+            "questionImage": "",
+            "questionText": "",
+            "answer": "",
+            "hint": ""
+        }
+    ],
+    "rules": {
+        "questionsPerGame": 1
+    },
+    "metadata": {
+        "targetAges": [5, 6]
+    }
+}
