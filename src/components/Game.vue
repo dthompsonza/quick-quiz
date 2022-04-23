@@ -10,6 +10,7 @@
             :answer="answer" 
             :hint="hint" 
             :questionNumber="questionNumber"
+            :rules="gameRules"
             @win="winAnswerCallback" 
             @lose="loseAnswerCallback"
         />
@@ -32,7 +33,8 @@
 
     const isPlaying = ref(false) //true: shows Question&Answer components
     const questionIndex = ref(-1)
-    const questionData = ref([])
+    const questions = ref([])
+    const gameRules = ref()
     const gameOver = ref(false) //true: shows Results component 
     const gameResults = ref({
             winState: false,
@@ -71,7 +73,8 @@
             return
         }
         gameOver.value = false 
-        questionData.value = gameSetup.data
+        gameRules.value = parseSetupGameRules(gameSetup.rules)
+        questions.value = gameSetup.questions
         isPlaying.value = true
         gameTick()
     }
@@ -82,7 +85,7 @@
             return
         }
         // Check if we've gone through all the questions
-        if (questionIndex.value >= questionData.value.length - 1) {
+        if (questionIndex.value >= questions.value.length - 1) {
             stopGame()
             return
         }
@@ -91,13 +94,13 @@
     }
 
     function advanceToNextQuestion() {
-        if (questionIndex.value < questionData.value.length - 1) {
+        if (questionIndex.value < questions.value.length - 1) {
 
             questionIndex.value++
             console.log('getting question #' + questionIndex.value)
-            questionText.value = questionData.value[questionIndex.value].questionText
-            answer.value = questionData.value[questionIndex.value].answer 
-            hint.value = questionData.value[questionIndex.value].hint
+            questionText.value = questions.value[questionIndex.value].questionText
+            answer.value = questions.value[questionIndex.value].answer 
+            hint.value = questions.value[questionIndex.value].hint
             questionNumber.value = questionIndex.value + 1
         }
     }
@@ -110,7 +113,7 @@
         answer.value = ''
         questionNumber.value = ''
         questionIndex.value = -1
-        questionData.value = []
+        questions.value = []
         if (isCancelled) {
             return
         }
@@ -119,7 +122,7 @@
     }
 
     function calculateWin() {
-        let lossCount = questionData.value.length - winCount.value
+        let lossCount = questions.value.length - winCount.value
         let winState = winCount.value > lossCount
         let text = winState ? `Well done you got ${winCount.value} correct` : `Aww you got ${lossCount} wrong`
         console.log(winState, text)
@@ -128,6 +131,18 @@
             winState: winState,
             text: text
         }
+    }
+
+    // Sanitizes the game rules from setup to conform to what the game expects
+    function parseSetupGameRules(setupGameRules) {
+        let rules = {
+            allowHints: setupGameRules.allowHints ?? true,
+            questionsPerGame: setupGameRules.questionsPerGame ?? 10,
+            answerButtonsLimit: setupGameRules.answerButtonLimit ?? 20,
+            answerAlternatives: setupGameRules.answerAlternatives ?? "AABCDEEFGHIIJKLMNOOPQRSTUUVWXYYZ"
+        }
+
+        return rules
     }
 
     //#endregion
@@ -151,9 +166,12 @@
 
     let gameSetup = {
         rules : {
-            allowHint: true
+            allowHints: false,
+            questionsPerGame: 3,
+            answerButtonLimit: 8,
+            answerAlternatives: null
         },
-        data : [
+        questions : [
             {
                 questionImage: null,
                 questionText: "What goes meow?",

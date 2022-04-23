@@ -1,76 +1,69 @@
 <template>
     <div v-if="isPlaying">
-        <input ref="inputTextbox" class="answerInput" v-model="givenAnswer" :maxlength="maxInputLength" />
-         <div>
-            <button @click="handleCheckAnswer" :disabled="!inputLengthIsValid">Check Answer</button>
-            <button @click="showHint" :disabled="hintVisible">Hint</button>
+        <div class="answerLettersBlock">
+            <ButtonPanel :characters="givenAnswer" :length="answerLength" />
+        </div>
+        <div class="answerPoolLettersBlock">
+            <ButtonPanel :characters="alternativeAnswerChars" />
+        </div>
+        
+        <div>
+            <button @click="handleCheckAnswer">Check Answer</button>
+            <button @click="showHint" :disabled="hintVisible" v-if="rules.allowHints">Hint</button>
         </div>
         <div v-if="hintVisible" class="hint">
             <p>{{ hint }}</p>
         </div>
-       
+
+        
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed, ref, watch, onMounted } from 'vue'
-
-    const ValidCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    import { computed, ref, watch } from 'vue'
+    import ButtonPanel from './ButtonPanel.vue'
 
     const emit = defineEmits(['win', 'lose'])
-    const props = defineProps(['isPlaying', 'answer', 'hint', 'questionNumber'])
+    const props = defineProps(['rules','isPlaying', 'answer', 'hint', 'questionNumber'])
     const givenAnswer = ref('')
     const hintVisible = ref(false)
-    const inputTextbox = ref()
 
-    const inputLengthIsValid = computed(() => {
-        return props.answer.length === givenAnswer.value.length
-    })
+    const answerLength = computed(() => props.answer?.length ?? 0)
+    const alternativeAnswerChars = computed(() => 
+            buildAnswerButtonChars(props.rules.answerAlternatives, 
+                props.rules.answerButtonsLimit,
+                props.answer)
+        )
 
-    onMounted(() => 
-        window.addEventListener("keypress", function(e) {
-            console.log(e)
-            AppendTextToAnswer(String.fromCharCode(e.keyCode))
-        }.bind(this)))
-
-    onMounted(() => 
-        window.addEventListener("keydown", function(e) {
-            console.log(e)
-            if (['Backspace', 'Delete'].includes(e.key)) {
-                RemoveLastCharFromAnswer()
-                e.preventDefault()
-            }
-            if (['Enter'].includes(e.key)) {
-                handleCheckAnswer()
-                e.preventDefault()
-            }
-        }.bind(this)))
-
-    onMounted(() => inputTextbox.value.focus)
-
-    function AppendTextToAnswer(char){
-        if (!props.isPlaying || !ValidCharacters.includes(char)) {
+    function buildAnswerButtonChars(alternativeChars, limit, answer) {
+        if (alternativeChars.length < limit){
+            console.log(`${alternativeChars} alternative chars list is too short to get ${limit} button limit`)
             return
         }
-
-        if (givenAnswer.value.length < props.answer.length) {
-            givenAnswer.value += char.toUpperCase()
+        var answerChars = answer
+        var charPool = alternativeChars.split('')
+        while(answerChars.length < limit && charPool.length > 0) {
+            var r = Math.floor(Math.random() * charPool.length)
+            var c = charPool[r]
+            charPool.slice(r, 1)
+            answerChars += c
         }
+
+        return shuffleWord(answerChars)
     }
 
-    function RemoveLastCharFromAnswer() {
-        if (!props.isPlaying) {
-            return
+    function shuffleWord (word){
+        var shuffledWord = '';
+        word = word.split('');
+        while (word.length > 0) {
+            shuffledWord +=  word.splice(word.length * Math.random() << 0, 1);
         }
-
-        if (givenAnswer.value.length > 0) {
-            givenAnswer.value = givenAnswer.value.slice(0, -1)
-        }
+        return shuffledWord;
     }
-    
-    const maxInputLength = computed(() => {
-        return props.answer.length
-    })
+
+    function addLetterToAnswer(char) {
+        givenAnswer.value += char
+    }
 
     function showHint() {
         hintVisible.value = true
@@ -113,8 +106,9 @@
 
 <style scoped>
 
-    .answerInput
+    .answerBlock
     {
+        background-color: #fff;
         letter-spacing: 2px;
         text-align: center;
         font-size: 54px;
