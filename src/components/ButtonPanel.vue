@@ -5,8 +5,7 @@
 </template>
 
 <script setup lang="ts">
-    import { stringifyStyle } from '@vue/shared';
-import { computed } from 'vue'
+    import { computed } from 'vue'
 
     const props = defineProps(['characters', 'length'])
 
