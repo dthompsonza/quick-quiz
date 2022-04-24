@@ -4,7 +4,10 @@
             <ButtonPanel :text="givenAnswer" :minLength="answerLength" />
         </div>
         <div class="answerPoolLettersBlock">
-            <ButtonPanel :text="alternativeAnswerChars" @button="" />
+            <ButtonPanel :text="alternativeAnswerChars" 
+            :maxLength="answerLength"
+            @button-pressed="answerPoolButtonCallback"
+            @button-unpressed="answerPoolButtonCallback" />
         </div>
         
         <div>
@@ -61,15 +64,12 @@
         return shuffledWord;
     }
 
-    function addLetterToAnswer(char) {
-        givenAnswer.value += char
+    function answerPoolButtonCallback(char, btnState) {
+        console.log('selected text is - ' + btnState.pressedText)
+        givenAnswer.value = btnState.pressedText
     }
 
-    function answerPoolButtonCallback(char, index) {
-
-    }
-
-    function answerButtonCallback(char, index) {
+    function answerButtonCallback(char, zipItem) {
 
     }
 

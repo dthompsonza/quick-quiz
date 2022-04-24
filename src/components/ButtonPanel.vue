@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button v-for="(char, index) in chars" class="answerCharacter" 
-            @click="buttonPressed(char, index)"
-            :class="{ pressed: buttonState[index] }">
+        <button v-for="(char, index) in displayChars" class="answerCharacter" 
+            @click="buttonClicked(char, index)"
+            :class="{ pressed: isPressed(index) }">
                 {{ formatDisplayChar(char) }}
         </button>
     </div>
@@ -10,22 +10,22 @@
 
 <script setup lang="ts">
     import { ref, computed, onMounted } from 'vue'
+    import { packBtnState } from "../scripts/buttonState"
 
-    const props = defineProps(['text', 'minLength'])
-    const emit = defineEmits(['button'])
+    const props = defineProps(['text', 'minLength', 'maxLength'])
+    const emit = defineEmits(['buttonPressed', 'buttonUnpressed'])
     const emptyChar = '\t'
-    var buttonState = ref([])
+    var pressedButtons = ref([])
 
-    const chars = computed(() => {
-                var p = props.text ?? ''
-                if (props.minLength ?? 0 > 0) {
-                    if (p.length < props.minLength) {
-                        p = p.padStart(props.minLength, emptyChar)
-                    }
+    const displayChars = computed(() => {
+            var chars = props.text ?? ''
+            if (props.minLength ?? 0 > 0) {
+                if (chars.length < props.minLength) {
+                    chars = chars.padEnd(props.minLength, emptyChar)
                 }
-                
-                return p;
-            })
+            }
+            return chars;
+        })
 
     function formatDisplayChar(char) {
         if (char === emptyChar) {
@@ -34,41 +34,47 @@
         return char 
     }
 
-    function getState(index) {
-        console.log('get button state ' + index)
-        return buttonState.value[index]
-    }
-
-    function buttonPressed(char, index) {
-        buttonState.value[index] = !buttonState.value[index]
-        var zstate = zipState(props.text, buttonState)
-        emit('button', char, zstate)
-    }
-
-    onMounted(() => {
-            
-            buttonState.value = new Array(props.text.length).fill(false)
-            console.log('button state init', buttonState)
-        })
-
-    function zipState(text, state) {
-        var zippedState = []
-        for (var i = 0; i < text.length; i++) {
-            if (state[i]) zippedState.push(i)
-        }
-        return zippedState
-    }
-
-    function unzipState(text, zstate) {
-        var state = Array(text.length).fill(false)
-        var zcounter = 0
-        for (var i = 0; i < text.length; i ++) {
-             if (zstate[zcounter] = i) {
-                 state[i] = true
-                 zcounter++
-             }
+    function buttonClicked(char, index) {
+        if (isPressed(index)) {
+            unpressButton(index)
+            var btnState = packBtnState(props.text, pressedButtons.value, emptyChar)
+            emit('buttonUnpressed', char, btnState)
+        } else {
+            pressButton(index)
+            var btnState = packBtnState(props.text, pressedButtons.value, emptyChar)
+            emit('buttonPressed', char, btnState)
         }
     }
+
+    
+    function pressButton(index) {
+        if (isPressed(index)) {
+            return
+        }
+        if (pressedButtons.value.length < (props?.minLength ?? props?.maxLength ?? 0)) {
+            pressedButtons.value.push(-1)
+        }
+        var io = pressedButtons.value.indexOf(-1)
+        if (io < 0) {
+            console.log('cant press any more buttons')
+            return 
+        }
+        pressedButtons.value[io] = index
+    }
+
+    function unpressButton(index) {
+        if (!isPressed(index)) {
+            return
+        }
+        var io = pressedButtons.value.indexOf(index)
+        pressedButtons.value[io] = -1
+    }
+
+    function isPressed(index) {
+        return pressedButtons.value.includes(index)
+    }
+
+    onMounted(() => pressedButtons.value = Array(props.minLength).fill(-1))
 
 </script>
 
