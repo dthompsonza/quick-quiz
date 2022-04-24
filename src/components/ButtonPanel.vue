@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, onMounted } from 'vue'
+    import { ref, computed, onMounted, watch } from 'vue'
     import { packBtnState } from "../scripts/buttonState"
 
     const props = defineProps(['text', 'minLength', 'maxLength'])
@@ -37,15 +37,28 @@
     function buttonClicked(char, index) {
         if (isPressed(index)) {
             unpressButton(index)
-            var btnState = packBtnState(props.text, pressedButtons.value, emptyChar)
-            emit('buttonUnpressed', char, btnState)
+            var pressedText = getPressedText(props.text, pressedButtons.value, emptyChar)
+            emit('buttonUnpressed', char, pressedText)
         } else {
             pressButton(index)
-            var btnState = packBtnState(props.text, pressedButtons.value, emptyChar)
-            emit('buttonPressed', char, btnState)
+            var pressedText = getPressedText(props.text, pressedButtons.value, emptyChar)
+            emit('buttonPressed', char, pressedText)
         }
     }
-
+    
+    function getPressedText(text, pressedButtons, missingCharSubstitute) {
+        if (pressedButtons.length > text.length) {
+            console.error('cant have more pressed buttons than text')
+        }
+        var pressedText = ''
+        for (var i = 0; i < pressedButtons.length; i++) {
+            if (pressedButtons[i] < 0)
+                pressedText += missingCharSubstitute
+            else
+                pressedText += text[pressedButtons[i]]
+        }
+        return pressedText
+    }
     
     function pressButton(index) {
         if (isPressed(index)) {
@@ -76,6 +89,12 @@
 
     onMounted(() => pressedButtons.value = Array(props.minLength).fill(-1))
 
+    function resetComponent() {
+        pressedButtons.value = []
+    }
+
+    watch(() => props.text, () => resetComponent())
+
 </script>
 
 <style scoped>
@@ -87,5 +106,9 @@
         border: 0;
         box-shadow: none;
         border-radius: 0px;
+    }
+
+    .answerCharacter.pressed {
+        background-color: goldenrod;
     }
 </style>

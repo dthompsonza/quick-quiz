@@ -64,9 +64,9 @@
         return shuffledWord;
     }
 
-    function answerPoolButtonCallback(char, btnState) {
-        console.log('selected text is - ' + btnState.pressedText)
-        givenAnswer.value = btnState.pressedText
+    function answerPoolButtonCallback(char, pressedText) {
+        console.log('selected text is - ' + pressedText)
+        givenAnswer.value = pressedText
     }
 
     function answerButtonCallback(char, zipItem) {
