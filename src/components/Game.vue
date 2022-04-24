@@ -1,24 +1,34 @@
 <template>
-    <div class="gameBlock" v-if="showGameBlock">
-        <Question :isPlaying="isPlaying" 
+    <div class="questionBlock" v-if="isPlaying && !gameOver && !questionOver">
+        <Question 
             :questionText="questionText" 
             :questionImage="questionImage" 
             :questionNumber="questionNumber"
         />
         <Answer  
-            :isPlaying="isPlaying" 
-            :answer="answer" 
+            :answer="answer"
             :hint="hint" 
             :questionNumber="questionNumber"
             :rules="gameRules"
             @win="winAnswerCallback" 
             @lose="loseAnswerCallback"
         />
+    </div>
+
+    <div class="questionResultBlock" v-if="isPlaying && !gameOver && questionOver">
+        <QuestionResult 
+            :win="questionResults.winState" 
+            :answer="questionResults.text" 
+            @okay-clicked="questionResultOkayCallback" />
+    </div>
+
+    <div class="gameResultBlock" v-if="!isPlaying && gameOver">
         <Result 
             :gameOver="gameOver" 
             :gameResults="gameResults" 
         />
     </div>
+
     <div class="controls">
         <button @click="handleStartGame" :disabled="isPlaying">Start Game</button>
         <button @click="handleStopGame" :disabled="!isPlaying">Quit Game</button>
@@ -26,33 +36,33 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed } from 'vue'
+    import { ref } from 'vue'
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'
+    import QuestionResult from './QuestionResult.vue'
 
     const isPlaying = ref(false) //true: shows Question&Answer components
     const questionIndex = ref(-1)
     const questions = ref([])
     const gameRules = ref()
-    const gameOver = ref(false) //true: shows Results component 
+    const questionOver = ref(false)
+    const questionResults = ref({
+        winState: false,
+        text: ''
+    })
+    const gameOver = ref(false) //true: shows (Game) Result's component 
     const gameResults = ref({
-            winState: false,
-            text: ''
-        })
+        winState: false,
+        text: ''
+    })
     const winCount = ref(0)
     const questionText = ref('')
     const questionImage = ref('')
     const answer = ref('')
     const hint = ref('')
     const questionNumber = ref(null)
-    
-    //#region Computed
-
-    const showGameBlock = computed(() => isPlaying.value || gameOver.value)
-
-    //#endregion
-
+   
     //#region Button events
 
     function handleStartGame() {
@@ -95,7 +105,6 @@
 
     function advanceToNextQuestion() {
         if (questionIndex.value < questions.value.length - 1) {
-
             questionIndex.value++
             console.log('getting question #' + questionIndex.value)
             questionText.value = questions.value[questionIndex.value].questionText
@@ -107,7 +116,7 @@
 
     function stopGame(isCancelled = false) {
         console.log('game over')
-        let gameOverResults = calculateWin()
+        var gameOverResults = calculateGameResults()
         isPlaying.value = false 
         questionText.value = ''
         answer.value = ''
@@ -121,10 +130,10 @@
         gameOver.value = true
     }
 
-    function calculateWin() {
-        let lossCount = questions.value.length - winCount.value
-        let winState = winCount.value > lossCount
-        let text = winState ? `Well done you got ${winCount.value} correct` : `Aww you got ${lossCount} wrong`
+    function calculateGameResults() {
+        var lossCount = questions.value.length - winCount.value
+        var winState = winCount.value > lossCount
+        var text = winState ? `Well done you got ${winCount.value} correct` : `Aww you got ${lossCount} wrong`
         console.log(winState, text)
 
         return { 
@@ -135,7 +144,7 @@
 
     // Sanitizes the game rules from setup to conform to what the game expects
     function parseSetupGameRules(setupGameRules) {
-        let rules = {
+        var rules = {
             allowHints: setupGameRules.allowHints ?? true,
             questionsPerGame: setupGameRules.questionsPerGame ?? 10,
             answerButtonsLimit: setupGameRules.answerButtonLimit ?? 20,
@@ -151,12 +160,21 @@
 
     function winAnswerCallback() {
         console.log('win callback')
+        questionResults.value.winState = true 
+        questionResults.value.text = answer.value
+        questionOver.value = true
         winCount.value++
-        gameTick()
     }
 
     function loseAnswerCallback() {
         console.log('lose callback')
+        questionResults.value.winState = false 
+        questionResults.value.text = answer.value
+        questionOver.value = true
+    }
+
+    function questionResultOkayCallback() {
+        questionOver.value = false
         gameTick()
     }
     
@@ -240,7 +258,7 @@
 </script>
     
 <style scoped>
-    .gameBlock {
+    .questionBlock {
         width: 80%;
         min-height: 100px;
         padding: 20px;
@@ -248,6 +266,25 @@
         background-color: #7db1ff;
         border-radius: 10px;
     }
+
+    .questionResultBlock {
+        width: 80%;
+        min-height: 100px;
+        padding: 20px;
+        margin: 30px auto;
+        background-color: #ad11ff;
+        border-radius: 10px;
+    }
+
+    .gameResultBlock {
+        width: 80%;
+        min-height: 100px;
+        padding: 20px;
+        margin: 30px auto;
+        background-color: #0db1ff;
+        border-radius: 10px;
+    }
+
     .controls {
         width: 70%;
         min-height: 50px;

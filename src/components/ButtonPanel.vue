@@ -10,7 +10,6 @@
 
 <script setup lang="ts">
     import { ref, computed, onMounted, watch } from 'vue'
-    import { packBtnState } from "../scripts/buttonState"
 
     const props = defineProps(['text', 'minLength', 'maxLength'])
     const emit = defineEmits(['buttonPressed', 'buttonUnpressed'])

@@ -1,25 +1,27 @@
 <template>
-    <div v-if="isPlaying">
+    <div>
         <div class="answerLettersBlock">
-            <ButtonPanel :text="givenAnswer" :minLength="answerLength" />
+            <ButtonPanel :text="givenAnswer" 
+                :minLength="answerLength" />
         </div>
         <div class="answerPoolLettersBlock">
             <ButtonPanel :text="alternativeAnswerChars" 
-            :maxLength="answerLength"
-            @button-pressed="answerPoolButtonCallback"
-            @button-unpressed="answerPoolButtonCallback" />
+                :maxLength="answerLength"
+                @button-pressed="answerPoolButtonCallback"
+                @button-unpressed="answerPoolButtonCallback" />
         </div>
         
         <div>
             <button @click="handleCheckAnswer">Check Answer</button>
-            <button @click="showHint" :disabled="hintVisible" v-if="rules.allowHints">Hint</button>
+            <button @click="showHint" 
+                :disabled="hintVisible" 
+                v-if="rules.allowHints">Hint</button>
         </div>
         <div v-if="hintVisible" class="hint">
             <p>{{ hint }}</p>
         </div>
-
-        
     </div>
+        
 </template>
 
 <script setup lang="ts">
@@ -27,7 +29,7 @@
     import ButtonPanel from './ButtonPanel.vue'
 
     const emit = defineEmits(['win', 'lose'])
-    const props = defineProps(['rules','isPlaying', 'answer', 'hint', 'questionNumber'])
+    const props = defineProps(['rules', 'answer', 'hint', 'questionNumber'])
     const givenAnswer = ref('')
     const hintVisible = ref(false)
 
@@ -39,6 +41,9 @@
         )
 
     function buildAnswerButtonChars(alternativeChars, limit, answer) {
+        if (answer == null) {
+            return
+        }
         if (alternativeChars.length < limit){
             console.log(`${alternativeChars} alternative chars list is too short to get ${limit} button limit`)
             return
@@ -67,10 +72,6 @@
     function answerPoolButtonCallback(char, pressedText) {
         console.log('selected text is - ' + pressedText)
         givenAnswer.value = pressedText
-    }
-
-    function answerButtonCallback(char, zipItem) {
-
     }
 
     function showHint() {

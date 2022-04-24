@@ -1,5 +1,5 @@
 <template>
-    <div v-if="gameOver">
+    <div>
         <h2>{{ gameResultTitle }}</h2>
         <p>{{ gameResults.text }}</p>
     </div>

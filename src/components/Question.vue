@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isPlaying">
+    <div>
         <div v-if="questionImage" class="questionImage">
             <img :src="questionImage" />
         </div>
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-    defineProps(['isPlaying', 'questionNumber', 'questionImage', 'questionText'])
+    defineProps(['questionNumber', 'questionImage', 'questionText'])
 </script>
 
 <style scoped>
