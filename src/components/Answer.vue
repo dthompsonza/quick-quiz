@@ -1,10 +1,10 @@
 <template>
     <div v-if="isPlaying">
         <div class="answerLettersBlock">
-            <ButtonPanel :characters="givenAnswer" :length="answerLength" />
+            <ButtonPanel :text="givenAnswer" :minLength="answerLength" />
         </div>
         <div class="answerPoolLettersBlock">
-            <ButtonPanel :characters="alternativeAnswerChars" />
+            <ButtonPanel :text="alternativeAnswerChars" @button="" />
         </div>
         
         <div>
@@ -63,6 +63,14 @@
 
     function addLetterToAnswer(char) {
         givenAnswer.value += char
+    }
+
+    function answerPoolButtonCallback(char, index) {
+
+    }
+
+    function answerButtonCallback(char, index) {
+
     }
 
     function showHint() {
