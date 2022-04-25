@@ -7,12 +7,14 @@
         <div class="answerPoolLettersBlock">
             <ButtonPanel :text="alternativeAnswerChars" 
                 :maxLength="answerLength"
+                :toggleWipePressed="toggleAnswerPoolPressedButtons"
                 @button-pressed="answerPoolButtonCallback"
                 @button-unpressed="answerPoolButtonCallback" />
         </div>
         
         <div>
-            <button @click="handleCheckAnswer">Check Answer</button>
+            <button @click="handleCheckAnswer">Send</button>
+            <button @click="handleClearAnswer">Clear</button>
             <button @click="showHint" 
                 :disabled="hintVisible" 
                 v-if="rules.allowHints">Hint</button>
@@ -32,7 +34,7 @@
     const props = defineProps(['rules', 'answer', 'hint', 'questionNumber'])
     const givenAnswer = ref('')
     const hintVisible = ref(false)
-
+    const toggleAnswerPoolPressedButtons = ref(0)
     const answerLength = computed(() => props.answer?.length ?? 0)
     const alternativeAnswerChars = computed(() => 
             buildAnswerButtonChars(props.rules.answerAlternatives, 
@@ -89,6 +91,11 @@
         if (props.answer.length > 0 && givenAnswer.value.length > 0 && props.answer.length === givenAnswer.value.length) {
             verifyWin(props.answer, givenAnswer.value)
         }
+    }
+
+    function handleClearAnswer() {
+        toggleAnswerPoolPressedButtons.value++ // watch on the buttonpanel will clear the pressed buttons
+        givenAnswer.value = ''
     }
 
     function verifyWin(answer, givenAnswer) {

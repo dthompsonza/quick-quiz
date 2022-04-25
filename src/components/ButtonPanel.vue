@@ -11,7 +11,7 @@
 <script setup lang="ts">
     import { ref, computed, onMounted, watch } from 'vue'
 
-    const props = defineProps(['text', 'minLength', 'maxLength'])
+    const props = defineProps(['text', 'minLength', 'maxLength', 'toggleWipePressed'])
     const emit = defineEmits(['buttonPressed', 'buttonUnpressed'])
     const emptyChar = '\t'
     var pressedButtons = ref([])
@@ -63,7 +63,8 @@
         if (isPressed(index)) {
             return
         }
-        if (pressedButtons.value.length < (props?.minLength ?? props?.maxLength ?? 0)) {
+        // We limit how many buttons can be "pressed" by controlling the size of the `pressedButtons[]` collection
+        if (pressedButtons.value.length < (props?.minLength ?? props?.maxLength ?? props.text.length)) {
             pressedButtons.value.push(-1)
         }
         var io = pressedButtons.value.indexOf(-1)
@@ -93,6 +94,7 @@
     }
 
     watch(() => props.text, () => resetComponent())
+    watch(() => props.toggleWipePressed, () => resetComponent())
 
 </script>
 
