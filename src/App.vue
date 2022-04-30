@@ -1,11 +1,10 @@
-
-
 <template>
   <div>
     <img class="mainLogo" src="./assets/img/quickquizlogo.jpg" width="350" height="150"/>
 
     <main>
       <GameList v-if="!isGameLoaded"
+        :cache-data-minutes="10"
         @load-game="loadGame"/>
 
       <Game v-if="isGameLoaded" 
@@ -39,6 +38,7 @@
 </script>
 
 <style>
+  @import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
   @import './assets/style/base.css';
 
   #app {

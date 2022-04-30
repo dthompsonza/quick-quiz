@@ -11,6 +11,7 @@
         <p v-if="error">
             {{ error }}
         </p>
+        <button @click="clearCache" class="smallButton">Clear Cache</button>
     </div>
 </template>
 
@@ -19,7 +20,7 @@
     import { sanitizeGameData } from '../assets/js/sanitizer'
 
     const emit = defineEmits(['loadGame'])
-
+    const props = defineProps(['cacheDataMinutes'])
     const loading = ref(false)
     const data = ref(null)
     const error = ref(null)
@@ -39,7 +40,45 @@
         }
     }
 
-    function fetchData() {
+    function fetchData () {
+        //localStorage.clear() 
+        var cachedData = getCache()
+        if (cachedData == null) {
+            console.log('getting data from internet')
+            fetchDataFromInternet()
+        }
+        else {
+            console.log('getting data from cache')
+            data.value = cachedData
+        }
+    }
+
+    function setCache(gameData) {
+        if (!gameData) {
+            return
+        }
+        console.log('caching game data')
+        localStorage.setItem('data', JSON.stringify(gameData))
+        localStorage.setItem('expires', addMinutes(props?.cacheDataMinutes ?? 5).toString())
+    }
+
+    function getCache() {
+        var data = localStorage.getItem('data')
+        var expires = localStorage.getItem('expires') 
+        if (!data || !expires || Date.parse(expires) < Date.now()) {
+            console.log('clearing cache', expires)
+            clearCache()
+            return null
+        }
+        return JSON.parse(data)
+    }
+
+    function clearCache() {
+        console.log('cache cleared')
+        localStorage.clear()
+    }
+
+    function fetchDataFromInternet() {
         loading.value = true
         return fetch('https://api.jsonbin.io/v3/b/626cea94019db46796939bee/latest', {
             method: 'get',
@@ -61,6 +100,7 @@
         .then(json => {
             // set the response data
             data.value = json.record // data is sanitized downstream on play click
+            setCache(json.record)
         })
         .catch(err => {
             error.value = err
@@ -76,6 +116,12 @@
             loading.value = false
         });
     }
+
+    function addMinutes(minutes) {
+        var now = new Date
+        return new Date(now.getTime() + minutes*60000);
+    }
+
 </script>
 
 <style scoped>
