@@ -150,8 +150,7 @@
             {"questionText": "12 x 12","answer": "144"}
         ],
         "rules": {
-            "questionsPerGame": 10,
-            "minInputLength": 1
+            "questionsPerGame": 10
         },
         "metadata": {
             "targetAges": [5, 6]
