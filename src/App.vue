@@ -2,26 +2,44 @@
 
 <template>
   <div>
-    <header>
-      <h1>Word Game</h1>
-    </header>
+    <img class="mainLogo" src="./assets/img/quickquizlogo.jpg" width="350" height="150"/>
 
     <main>
-      <Game />
+      <GameList v-if="!isGameLoaded"
+        @load-game="loadGame"/>
+
+      <Game v-if="isGameLoaded" 
+        :game-setup="gameData" 
+        @unload-game="unloadGame" />
     </main>
   </div>
 </template>
 
 <script setup>
-  import Game from './components/Game.vue';
+  import { ref } from 'vue'
+  import Game from './components/Game.vue'
+  import GameList from './components/GameList.vue'
 
-  //const text = ref('')
+  const isGameLoaded = ref(false)
+  const gameData = ref(null)
 
+  function loadGame(emitGameData) {
+    if (isGameLoaded.value || !emitGameData) {
+      return
+    }
+    gameData.value = emitGameData
+    isGameLoaded.value = true
+  }
+
+  function unloadGame() {
+    isGameLoaded.value = false
+    gameData.value = null
+  }
 
 </script>
 
 <style>
-  @import './assets/base.css';
+  @import './assets/style/base.css';
 
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;

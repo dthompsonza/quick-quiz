@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div :class="componentClass">
         <button v-for="(char, index) in displayChars" class="answerCharacter" 
-            @click="buttonClicked(char, index)"
+            @click="buttonPressed(char, index)"
             :class="{ pressed: isPressed(index) }">
                 {{ formatDisplayChar(char) }}
         </button>
@@ -11,11 +11,12 @@
 <script setup lang="ts">
     import { ref, computed, onMounted, watch } from 'vue'
 
-    const props = defineProps(['text', 'minLength', 'maxLength', 'toggleWipePressed'])
+    const props = defineProps(['name', 'text', 'minLength', 'maxLength', 'toggleWipePressed'])
     const emit = defineEmits(['buttonPressed', 'buttonUnpressed'])
     const emptyChar = '\t'
     var pressedButtons = ref([])
 
+    const componentClass = computed(() => `buttonpanel-${props.name}`)
     const displayChars = computed(() => {
             var chars = props.text ?? ''
             if (props.minLength ?? 0 > 0) {
@@ -28,12 +29,12 @@
 
     function formatDisplayChar(char) {
         if (char === emptyChar) {
-            return "."
+            return "_"
         }
         return char 
     }
 
-    function buttonClicked(char, index) {
+    function buttonPressed(char, index) {
         if (isPressed(index)) {
             unpressButton(index)
             var pressedText = getPressedText(props.text, pressedButtons.value, emptyChar)

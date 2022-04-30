@@ -1,9 +1,19 @@
 <template>
+    <div class="controls">
+        <span class="gameName">{{ gameName }}</span>
+        <p>
+            <button @click="handleStartGame" :disabled="isPlaying">Start Game</button>
+            <button @click="handleStopGame" :disabled="!isPlaying">Stop Game</button>
+            <button @click="handleQuitGame" :disabled="isPlaying">Quit Game</button>
+        </p>
+    </div>
     <div class="questionBlock" v-if="isPlaying && !gameOver && !questionOver">
+
         <Question 
             :questionText="questionText" 
             :questionImage="questionImage" 
             :questionNumber="questionNumber"
+            :questionCount="questionCount"
         />
         <Answer  
             :answer="answer"
@@ -29,22 +39,22 @@
         />
     </div>
 
-    <div class="controls">
-        <button @click="handleStartGame" :disabled="isPlaying">Start Game</button>
-        <button @click="handleStopGame" :disabled="!isPlaying">Quit Game</button>
-    </div>
+    
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { ref, computed } from 'vue'
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'
     import QuestionResult from './QuestionResult.vue'
 
+    const emit = defineEmits(['unloadGame'])
+    const props = defineProps(['gameSetup'])
     const isPlaying = ref(false) //true: shows Question&Answer components
     const questionIndex = ref(-1)
     const questions = ref([])
+    
     const gameRules = ref()
     const questionOver = ref(false)
     const questionResults = ref({
@@ -63,6 +73,9 @@
     const hint = ref('')
     const questionNumber = ref(null)
    
+    const gameName = computed(() => props.gameSetup.name)
+    const questionCount = computed(() => questions.value.length)
+
     //#region Button events
 
     function handleStartGame() {
@@ -71,6 +84,10 @@
 
     function handleStopGame() {
         stopGame(true)
+    }
+
+    function handleQuitGame() {
+        emit('unloadGame')
     }
 
     //#endregion
@@ -83,10 +100,36 @@
             return
         }
         gameOver.value = false 
-        gameRules.value = parseSetupGameRules(gameSetup.rules)
-        questions.value = gameSetup.questions
+        if (!props.gameSetup) {
+            console.error('there is no game setup data')
+            return
+        }
+        gameRules.value = props.gameSetup.rules
+        questions.value = getGameQuestions(props.gameSetup)
         isPlaying.value = true
         gameTick()
+    }
+
+    function getGameQuestions(gameSetup) {
+        var availableQuestions = gameSetup.questions.map(q => q.questionIndex)
+        var selectedQuestions = []
+        while (availableQuestions.length > 0) {
+            var index = random(0, availableQuestions.length)
+            selectedQuestions.push(availableQuestions[index])
+            availableQuestions.splice(index, 1)
+            if (selectedQuestions.length >= gameSetup.rules.questionsPerGame) {
+                break
+            }
+        }
+        var questions = []
+        for (var i = 0; i < selectedQuestions.length; i++) {
+            questions.push(gameSetup.questions[selectedQuestions[i]])
+        }
+        return questions
+    }
+
+    function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     
     function gameTick() {
@@ -142,18 +185,6 @@
         }
     }
 
-    // Sanitizes the game rules from setup to conform to what the game expects
-    function parseSetupGameRules(setupGameRules) {
-        var rules = {
-            allowHints: setupGameRules.allowHints ?? true,
-            questionsPerGame: setupGameRules.questionsPerGame ?? 10,
-            answerButtonsLimit: setupGameRules.answerButtonLimit ?? 20,
-            answerAlternatives: setupGameRules.answerAlternatives ?? "AABCDEEFGHIIJKLMNOOPQRSTUUVWXYYZ"
-        }
-
-        return rules
-    }
-
     //#endregion
 
     //#region Callbacks 
@@ -179,81 +210,6 @@
     }
     
     //#endregion 
-
-    //#region Other
-
-    let gameSetup = {
-        rules : {
-            allowHints: false,
-            questionsPerGame: 3,
-            answerButtonLimit: 8,
-            answerAlternatives: null
-        },
-        questions : [
-            {
-                questionImage: null,
-                questionText: "What goes meow?",
-                answer: "CAT",
-                hint: "Its not a dog"
-            },
-            {
-                questionImage: null,
-                questionText: "What goes woof?",
-                answer: "DOG",
-                hint: "Its not a cat"
-            },
-            {
-                questionImage: null,
-                questionText: "What animal with feathers can fly?",
-                answer: "BIRD",
-                hint: "Chirp chirp"
-            },
-            {
-                questionImage: null,
-                questionText: "Black and white sea bird?",
-                answer: "PENGUIN",
-                hint: "Starts with a P"
-            },
-            {
-                questionImage: null,
-                questionText: "What shape is round?",
-                answer: "CIRCLE",
-                hint: "Like a hula-hoop"
-            },
-            {
-                questionImage: null,
-                questionText: "What does a chicken lay?",
-                answer: "EGG",
-                hint: "Yummy for breakfast"
-            },
-            {
-                questionImage: null,
-                questionText: "Mix Blue and Yellow?",
-                answer: "GREEN",
-                hint: "The colour of leaves"
-            },
-            {
-                questionImage: null,
-                questionText: "What color is snow?",
-                answer: "WHITE",
-                hint: null
-            },
-            {
-                questionImage: null,
-                questionText: "This is hard?",
-                answer: "WOOD",
-                hint: "Its made from trees"
-            },
-            {
-                questionImage: null,
-                questionText: "Green is the answer?",
-                answer: "GREEN",
-                hint: "Just type green"
-            },
-        ]
-    }
-
-    //#endregion
 
 </script>
     
@@ -287,9 +243,9 @@
 
     .controls {
         width: 70%;
-        min-height: 50px;
-        padding: 20px;
-        margin: 30px auto;
+        min-height: 30px;
+        padding: 5px;
+        margin: 5px auto;
         background-color: #b1b1d8;
         border-radius: 10px;
     }

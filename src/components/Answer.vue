@@ -1,11 +1,15 @@
 <template>
     <div>
         <div class="answerLettersBlock">
-            <ButtonPanel :text="givenAnswer" 
+            <ButtonPanel 
+                name="givenAnswer"
+                :text="givenAnswer" 
                 :minLength="answerLength" />
         </div>
         <div class="answerPoolLettersBlock">
-            <ButtonPanel :text="alternativeAnswerChars" 
+            <ButtonPanel 
+                name="answerPool"
+                :text="alternativeAnswerChars" 
                 :maxLength="answerLength"
                 :toggleWipePressed="toggleAnswerPoolPressedButtons"
                 @button-pressed="answerPoolButtonCallback"
@@ -37,13 +41,13 @@
     const toggleAnswerPoolPressedButtons = ref(0)
     const answerLength = computed(() => props.answer?.length ?? 0)
     const alternativeAnswerChars = computed(() => 
-            buildAnswerButtonChars(props.rules.answerAlternatives, 
+            buildAnswerButtonChars(props.rules?.answerAlternatives, 
                 props.rules.answerButtonsLimit,
                 props.answer)
         )
 
     function buildAnswerButtonChars(alternativeChars, limit, answer) {
-        if (answer == null) {
+        if (answer == null || alternativeChars == null) {
             return
         }
         if (alternativeChars.length < limit){

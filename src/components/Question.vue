@@ -4,9 +4,7 @@
             <img :src="questionImage" />
         </div>
         <div v-if="questionText" class="questionText">
-            <h2>Question {{ questionNumber }}</h2>
-            <br/>
-            <h3>{{ questionText }}</h3>
+            <h3>({{ questionNumber }}/{{ questionCount }}) {{ questionText }}</h3>
         </div>
         
         
@@ -14,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-    defineProps(['questionNumber', 'questionImage', 'questionText'])
+    defineProps(['questionNumber', 'questionImage', 'questionText', 'questionCount'])
 </script>
 
 <style scoped>
