@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && data && data.length">
-            <button v-for="game of data" class="gameButton" @click="handlePlayGameClick(game.uniqueid)">
+            <button v-for="game of data" class="button is-large gameButton" @click="handlePlayGameClick(game.uniqueid)">
                 {{ game.name }} 
             </button> <br/>
         </div>
@@ -11,7 +11,7 @@
         <p v-if="error">
             {{ error }}
         </p>
-        <button @click="clearCache" class="smallButton">Clear Cache</button>
+        <button @click="clearCache" class="button is-small">Clear Cache</button>
     </div>
 </template>
 
