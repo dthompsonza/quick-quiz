@@ -11,7 +11,7 @@
 <script setup lang="ts">
     import { ref, computed, onMounted, watch } from 'vue'
 
-    const props = defineProps(['name', 'text', 'minLength', 'maxLength', 'toggleWipePressed'])
+    const props = defineProps(['name', 'text', 'minLength', 'maxLength', 'toggleWipePressed', 'canPress'])
     const emit = defineEmits(['buttonPressed', 'buttonUnpressed'])
     const emptyChar = '\t'
     var pressedButtons = ref([])
@@ -35,6 +35,9 @@
     }
 
     function buttonPressed(char, index) {
+        if (!props.canPress) {
+            return
+        }
         if (isPressed(index)) {
             unpressButton(index)
             var pressedText = getPressedText(props.text, pressedButtons.value, emptyChar)

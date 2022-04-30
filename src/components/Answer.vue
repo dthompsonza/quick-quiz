@@ -11,6 +11,7 @@
                 name="answerPool"
                 :text="alternativeAnswerChars" 
                 :maxLength="answerLength"
+                :canPress="true"
                 :toggleWipePressed="toggleAnswerPoolPressedButtons"
                 @button-pressed="answerPoolButtonCallback"
                 @button-unpressed="answerPoolButtonCallback" />
