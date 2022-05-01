@@ -1,45 +1,7 @@
-# Words & Numbers Game
+# Quick Quiz
 
-A really simple little web app to let kids run through preset tests where the game player
-needs is given a series of questions or challenges and needs to type out an answer.
+An online utility that allows users to do simple quizzes. The power of this tool is that anyone can create
+their own "classroom" and setup quizzes, especially useful for teachers who would like their tech-savvy pupils
+to be able to practice word and number problems from any phone, tablet or computer.
 
-If the player is linked to a school/club then you and their teacher would be able to gauge
-their abilities as compared to their peers. 
-
-A useful tool that is both fun and insightful for educators and parents alike.
-
-Visit the current running build to demo: https://dthompsonza.github.io/word-game/
-
-More coming....
-
-@dthompsonza
-
-## To Do
-
-1. Quit Button - ~~Make it work~~
-2. Fix game flow
-  * user should type full word and then a "Check Answer" button is enabled
-  * if the user is correct, flash green else flash red (flash can be on the next question and transition to the regular _gameBlock_ background color)
-  * per question record:
-    1. given answer
-    2. win/lose
-    3. TTAQ (time to answer question aka click Check Answer)
-    4. user (future)
-3. Add "Give Up" button to automatically get the answer wrong with no answer recorded
-4. On the Results block, show the list of questions, correct answer, given answer and a ❌ or ✔ to indicate lose or win
-5. Get some words and numbers games together. 3 of each with 10 questions apiece, so 3 "words" games with 10 questions each and 3 "numbers" games also with 10 questions each, so 60 questions total
-6. Figure out how to wire up the game to the game data
-7. Get some better styling
-8. Add users 
-9. Forget some of point 2...
-    > Add 20 buttons to the bottom of each answer component, the 20 answers consisting of all the correct characters in the answer + random similar ones
-    > eg,
-    > For words, DOLPHIN could show letters D O L C A R M A L O H P I I A X N A
-    > For sums, 17 x 8 = 136 could show (fewer) 1 1 2 3 4 4 6 7 8 8 9 0
-    > Game setup will explicitly provide a pool of alternatives to cycle through
-
-### 6. Add users
-
-Let the user signup with an email address, magic link to login to the app
-Also capture CLASS_CODE, a string that links that email to a school class or club or whatever entity the user is a part of
-Capture the users name
+[Visit Quick-Quiz](https://dthompsonza.github.io/quick-quiz)
