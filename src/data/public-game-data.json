@@ -168,37 +168,37 @@
         },
         "questions" : [
             {
-                "questionImage": null,
+                "questionImage": "bird.png",
                 "questionText": "What goes meow?",
                 "answer": "CAT",
                 "hint": "Its not a dog"
             },
             {
-                "questionImage": null,
+                "questionImage": "bird.png",
                 "questionText": "What goes woof?",
                 "answer": "DOG",
                 "hint": "Its not a cat"
             },
             {
-                "questionImage": null,
+                "questionImage": "bird.png",
                 "questionText": "What animal with feathers can fly?",
                 "answer": "BIRD",
                 "hint": "Chirp chirp"
             },
             {
-                "questionImage": null,
+                "questionImage": "bird.png",
                 "questionText": "Black and white sea bird?",
                 "answer": "PENGUIN",
                 "hint": "Starts with a P"
             },
             {
-                "questionImage": null,
+                "questionImage": "bird.png",
                 "questionText": "What shape is round?",
                 "answer": "CIRCLE",
                 "hint": "Like a hula-hoop"
             },
             {
-                "questionImage": null,
+                "questionImage": "bird.png",
                 "questionText": "What does a chicken lay?",
                 "answer": "EGG",
                 "hint": "Yummy for breakfast"

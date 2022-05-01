@@ -1,19 +1,21 @@
 <template>
     <div class="controls">
-        <span class="gameName">{{ gameName }}</span>
+        <span class="title is-3">{{ gameName }}</span>
         <p>
             <button @click="handleStartGame" :disabled="isPlaying">Start Game</button>
             <button @click="handleStopGame" :disabled="!isPlaying">Stop Game</button>
             <button @click="handleQuitGame" :disabled="isPlaying">Quit Game</button>
         </p>
     </div>
-    <div class="questionBlock" v-if="isPlaying && !gameOver && !questionOver">
+
+    <div class="box questionBlock" v-if="isPlaying && !gameOver && !questionOver">
 
         <Question 
             :questionText="questionText" 
             :questionImage="questionImage" 
             :questionNumber="questionNumber"
             :questionCount="questionCount"
+            :gameId="gameId"
         />
         <Answer  
             :answer="answer"
@@ -23,6 +25,7 @@
             @win="winAnswerCallback" 
             @lose="loseAnswerCallback"
         />
+        <Progress :max="progressMaxValue" :value="progressValue" />
     </div>
 
     <div class="questionResultBlock" v-if="isPlaying && !gameOver && questionOver">
@@ -48,6 +51,7 @@
     import Answer from './Answer.vue'
     import Result from './Result.vue'
     import QuestionResult from './QuestionResult.vue'
+    import Progress from './Progress.vue'
 
     const emit = defineEmits(['unloadGame'])
     const props = defineProps(['gameSetup'])
@@ -56,6 +60,7 @@
     const questions = ref([])
     
     const gameRules = ref()
+    const gameId = ref()
     const questionOver = ref(false)
     const questionResults = ref({
         winState: false,
@@ -75,6 +80,8 @@
    
     const gameName = computed(() => props.gameSetup.name)
     const questionCount = computed(() => questions.value.length)
+    const progressMaxValue = computed(() => !isPlaying ? 0 : questions.value.length)
+    const progressValue = computed(() => !isPlaying.value ? 0 : questionIndex.value + 1)
 
     //#region Button events
 
@@ -105,6 +112,7 @@
             return
         }
         gameRules.value = props.gameSetup.rules
+        gameId.value = props.gameSetup.uniqueid
         questions.value = getGameQuestions(props.gameSetup)
         isPlaying.value = true
         gameTick()
@@ -114,22 +122,28 @@
         var availableQuestions = gameSetup.questions.map(q => q.questionIndex)
         var selectedQuestions = []
         while (availableQuestions.length > 0) {
-            var index = random(0, availableQuestions.length)
+            var index = getRandomInt(0, availableQuestions.length)
+            console.log('random index is ', index, availableQuestions[index], availableQuestions.length)
             selectedQuestions.push(availableQuestions[index])
             availableQuestions.splice(index, 1)
             if (selectedQuestions.length >= gameSetup.rules.questionsPerGame) {
+                console.log('enough questions found for this round')
                 break
             }
         }
         var questions = []
         for (var i = 0; i < selectedQuestions.length; i++) {
-            questions.push(gameSetup.questions[selectedQuestions[i]])
+            var question = gameSetup.questions[selectedQuestions[i]]
+            console.log(i, 'adding question ', selectedQuestions[i], question)
+            questions.push(question)
         }
         return questions
     }
 
-    function random(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
     }
     
     function gameTick() {
@@ -151,6 +165,7 @@
             questionIndex.value++
             console.log('getting question #' + questionIndex.value)
             questionText.value = questions.value[questionIndex.value].questionText
+            questionImage.value = questions.value[questionIndex.value].questionImage
             answer.value = questions.value[questionIndex.value].answer 
             hint.value = questions.value[questionIndex.value].hint
             questionNumber.value = questionIndex.value + 1
@@ -162,10 +177,13 @@
         var gameOverResults = calculateGameResults()
         isPlaying.value = false 
         questionText.value = ''
+        questionImage.value = ''
         answer.value = ''
         questionNumber.value = ''
         questionIndex.value = -1
         questions.value = []
+        gameRules.value = null
+        gameId.value = null
         if (isCancelled) {
             return
         }

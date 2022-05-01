@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && data && data.length">
-            <button v-for="game of data" class="button is-large gameButton" @click="handlePlayGameClick(game.uniqueid)">
+            <button v-for="game of data" class="button is-large is-rounded" @click="handlePlayGameClick(game.uniqueid)">
                 {{ game.name }} 
             </button> <br/>
         </div>
@@ -11,7 +11,7 @@
         <p v-if="error">
             {{ error }}
         </p>
-        <button @click="clearCache" class="button is-small">Clear Cache</button>
+        <button @click="clearCache" class="button is-small is-rounded">Clear Cache</button>
     </div>
 </template>
 
@@ -74,8 +74,9 @@
     }
 
     function clearCache() {
+        localStorage.removeItem('data')
+        localStorage.removeItem('expires')
         console.log('cache cleared')
-        localStorage.clear()
     }
 
     function fetchDataFromInternet() {
@@ -125,9 +126,5 @@
 </script>
 
 <style scoped>
-
-    .gameButton {
-        min-width: 80%;
-    }
 
 </style>
