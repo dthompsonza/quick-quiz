@@ -54,7 +54,9 @@
             {"questionText": "4 x 12","answer": "48"}
         ],
         "rules": {
-            "questionsPerGame": 10
+            "questionsPerGame": 10,
+            "answerAlternatives": "11223344556677889900",
+            "answerButtonLimit": 5
         },
         "metadata": {
             "targetAges": [5, 6]
@@ -115,7 +117,9 @@
             {"questionText": "8 x 12","answer": "96"}
         ],
         "rules": {
-            "questionsPerGame": 10
+            "questionsPerGame": 10,
+            "answerAlternatives": "11223344556677889900",
+            "answerButtonLimit": 5
         },
         "metadata": {
             "targetAges": [5, 6]
@@ -176,7 +180,9 @@
             {"questionText": "12 x 12","answer": "144"}
         ],
         "rules": {
-            "questionsPerGame": 10
+            "questionsPerGame": 10,
+            "answerAlternatives": "11223344556677889900",
+            "answerButtonLimit": 5
         },
         "metadata": {
             "targetAges": [5, 6]
@@ -190,7 +196,7 @@
             "allowHints": true,
             "questionsPerGame": 10,
             "answerButtonLimit": 8,
-            "answerAlternatives": "11223344556677889900"
+            "answerAlternatives": null
         },
         "questions" : [
             {

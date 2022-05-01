@@ -1,9 +1,10 @@
 <template>
     <div>
         <div v-if="!loading && data && data.length">
-            <button v-for="game of data" class="button is-large is-rounded" @click="handlePlayGameClick(game.uniqueid)">
+            <button v-for="game of data" class="button is-fullwidth is-rounded" @click="handlePlayGameClick(game.uniqueid)">
                 {{ game.name }} 
-            </button> <br/>
+            </button> 
+            
         </div>
         <p v-if="loading">
             Still loading..
@@ -17,7 +18,7 @@
 
 <script setup lang="ts">
     import { ref, onMounted } from 'vue'
-    import { sanitizeGameData } from '../assets/js/sanitizer'
+    import { sanitizeGameData } from '../helpers/sanitizer'
 
     const emit = defineEmits(['loadGame'])
     const props = defineProps(['cacheDataMinutes'])

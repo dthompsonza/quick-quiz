@@ -16,7 +16,7 @@
       <div class="card">
         <div class="card-image">
           <figure class="image">
-            <img src="./assets/img/quickquizlogo.jpg" v-if="!isGameLoaded"/>
+            <img src="./assets/img/quickquizlogo.jpg" class="x-limit-width" v-if="!isGameLoaded"/>
           </figure>
         </div>
         <div class="card-content">
