@@ -81,11 +81,8 @@
 
     function fetchDataFromInternet() {
         loading.value = true
-        return fetch('https://api.jsonbin.io/v3/b/626cea94019db46796939bee/latest', {
-            method: 'get',
-            headers: {
-                'X-Access-Key': '$2b$10$fKv234WnYBujGK07c30S/OtLu41YnOwJIsV3/kr4c4mIK2XX2MmpW'
-            }
+        return fetch('./data/public-game-data.json', {
+            method: 'get'
         })
         .then(res => {
         // a non-200 response code
@@ -100,8 +97,8 @@
         })
         .then(json => {
             // set the response data
-            data.value = json.record // data is sanitized downstream on play click
-            setCache(json.record)
+            data.value = json 
+            setCache(json)
         })
         .catch(err => {
             error.value = err
