@@ -1,7 +1,7 @@
 [
     {
-        "name": "Maths times tables 1 to 12",
-        "uniqueid": "5aa509b4-5752-488d-ba4e-ccd8ad9aa1e5",
+        "name": "Maths times tables 1 to 4",
+        "uniqueid": "607b56aa-a995-4412-9285-3215ec4ef253",
         "enabled": true,
         "questions": [
             {"questionText": "1 x 1","answer": "1"},
@@ -51,7 +51,20 @@
             {"questionText": "4 x 9","answer": "36"},
             {"questionText": "4 x 10","answer": "40"},
             {"questionText": "4 x 11","answer": "44"},
-            {"questionText": "4 x 12","answer": "48"},
+            {"questionText": "4 x 12","answer": "48"}
+        ],
+        "rules": {
+            "questionsPerGame": 10
+        },
+        "metadata": {
+            "targetAges": [5, 6]
+        }
+    },
+    {
+        "name": "Maths times tables 5 to 8",
+        "uniqueid": "8488c660-5b34-4147-a955-ece4bc77fdae",
+        "enabled": true,
+        "questions": [
             {"questionText": "5 x 1","answer": "5"},
             {"questionText": "5 x 2","answer": "10"},
             {"questionText": "5 x 3","answer": "15"},
@@ -99,7 +112,20 @@
             {"questionText": "8 x 9","answer": "72"},
             {"questionText": "8 x 10","answer": "80"},
             {"questionText": "8 x 11","answer": "88"},
-            {"questionText": "8 x 12","answer": "96"},
+            {"questionText": "8 x 12","answer": "96"}
+        ],
+        "rules": {
+            "questionsPerGame": 10
+        },
+        "metadata": {
+            "targetAges": [5, 6]
+        }
+    },
+    {
+        "name": "Maths times tables 9 to 12",
+        "uniqueid": "a3d2d998-d365-442f-bed6-0e8ea6402da9",
+        "enabled": true,
+        "questions": [
             {"questionText": "9 x 1","answer": "9"},
             {"questionText": "9 x 2","answer": "18"},
             {"questionText": "9 x 3","answer": "27"},
@@ -164,7 +190,7 @@
             "allowHints": true,
             "questionsPerGame": 10,
             "answerButtonLimit": 8,
-            "answerAlternatives": null
+            "answerAlternatives": "11223344556677889900"
         },
         "questions" : [
             {

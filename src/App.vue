@@ -1,4 +1,16 @@
 <template>
+  <div>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        
+        <a class="navbar-item" href="https://dthompsonza.github.io/quick-quiz">
+          <img src="./assets/img/quickquizlogo2.png" alt="The best little quiz tool in town" width="112" height="28">
+        </a>
+
+      </div>
+    </nav>
+  </div>
+
   <div class="section">
     <div class="container">
       <div class="card">
