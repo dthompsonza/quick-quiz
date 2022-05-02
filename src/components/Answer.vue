@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
     import { computed, ref, watch } from 'vue'
+    import { set } from '@vueuse/core'
     import ButtonPanel from './ButtonPanel.vue'
 
     const emit = defineEmits(['roundOver'])
@@ -78,7 +79,7 @@
 
     function answerPoolButtonCallback(char, pressedText) {
         console.log('selected text is - ' + pressedText)
-        givenAnswer.value = pressedText
+        set(givenAnswer, pressedText) 
     }
 
     function showHint() {
