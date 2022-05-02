@@ -35,7 +35,7 @@
     import { computed, ref, watch } from 'vue'
     import ButtonPanel from './ButtonPanel.vue'
 
-    const emit = defineEmits(['win', 'lose'])
+    const emit = defineEmits(['roundOver'])
     const props = defineProps(['rules', 'answer', 'hint', 'questionNumber'])
     const givenAnswer = ref('')
     const hintVisible = ref(false)
@@ -105,10 +105,10 @@
 
     function verifyWin(answer, givenAnswer) {
         if (answersMatch(answer, givenAnswer)) {
-            emit('win')
+            emit('roundOver', true)
             console.log("correct")
         } else {
-            emit('lose')
+            emit('roundOver', false)
             console.log("wrong")
         }
         return true

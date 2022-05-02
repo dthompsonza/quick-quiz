@@ -22,8 +22,7 @@
             :hint="hint" 
             :questionNumber="questionNumber"
             :rules="gameRules"
-            @win="winAnswerCallback" 
-            @lose="loseAnswerCallback"
+            @round-over="handleAnswerResultCallback" 
         />
         <Progress :max="progressMaxValue" :value="progressValue" />
     </div>
@@ -32,7 +31,7 @@
         <QuestionResult 
             :win="questionResults.winState" 
             :answer="questionResults.text" 
-            @okay-clicked="questionResultOkayCallback" />
+            @okay-clicked="closeQuestionResultAndTick" />
     </div>
 
     <div class="gameResultBlock" v-if="!isPlaying && gameOver">
@@ -207,22 +206,17 @@
 
     //#region Callbacks 
 
-    function winAnswerCallback() {
-        console.log('win callback')
-        questionResults.value.winState = true 
+    function handleAnswerResultCallback(winState) {
+        console.log('round result event handled')
+        questionResults.value.winState = winState 
         questionResults.value.text = answer.value
         questionOver.value = true
-        winCount.value++
+        if (winState) {
+            winCount.value++
+        }
     }
 
-    function loseAnswerCallback() {
-        console.log('lose callback')
-        questionResults.value.winState = false 
-        questionResults.value.text = answer.value
-        questionOver.value = true
-    }
-
-    function questionResultOkayCallback() {
+    function closeQuestionResultAndTick() {
         questionOver.value = false
         gameTick()
     }
