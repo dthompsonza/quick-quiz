@@ -40,12 +40,11 @@
             :gameResults="gameResults" 
         />
     </div>
-
-    
 </template>
 
 <script setup lang="ts">
     import { ref, computed } from 'vue'
+
     import Question from './Question.vue'
     import Answer from './Answer.vue'
     import Result from './Result.vue'

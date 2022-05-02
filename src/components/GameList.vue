@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && data && data.length">
-            <button v-for="game of data" class="button is-fullwidth is-rounded" @click="handlePlayGameClick(game.uniqueid)">
+            <button v-for="game of data" class="button is-fullwidth is-rounded" @click="clickPlayGame(game.uniqueid)">
                 {{ game.name }} 
             </button> 
             
@@ -28,7 +28,7 @@
 
     onMounted(() => fetchData())
 
-    function handlePlayGameClick(gameId) {
+    function clickPlayGame(gameId) {
         if (!data.value) {
             console.error('there is no game data to play', gameId)
             return 
