@@ -106,10 +106,20 @@
 
     function verifyWin(answer, givenAnswer) {
         if (answersMatch(answer, givenAnswer)) {
-            emit('roundOver', true)
+            emit('roundOver', {
+                questionNo: props.questionNumber,
+                winState: true,
+                answer: answer,
+                givenAnswer: givenAnswer
+            })
             console.log("correct")
         } else {
-            emit('roundOver', false)
+            emit('roundOver', {
+                questionNo: props.questionNumber,
+                winState: false,
+                answer: answer,
+                givenAnswer: givenAnswer
+            })
             console.log("wrong")
         }
         return true

@@ -24,7 +24,10 @@
             :rules="gameRules"
             @round-over="handleAnswerResultCallback" 
         />
-        <Progress :max="progressMaxValue" :value="progressValue" />
+        <Progress 
+            :max="progressMaxValue" 
+            :value="progressValue" 
+        />
     </div>
 
     <div class="questionResultBlock" v-if="isPlaying && !gameOver && questionOver">
@@ -35,7 +38,7 @@
     </div>
 
     <div class="gameResultBlock" v-if="!isPlaying && gameOver">
-        <Result 
+        <GameResult 
             :gameOver="gameOver" 
             :gameResults="gameResults" 
         />
@@ -47,7 +50,7 @@
 
     import Question from './Question.vue'
     import Answer from './Answer.vue'
-    import Result from './Result.vue'
+    import GameResult from './GameResult.vue'
     import QuestionResult from './QuestionResult.vue'
     import Progress from './Progress.vue'
 
@@ -64,10 +67,12 @@
         winState: false,
         text: ''
     })
+    const scoreboard = ref([])
     const gameOver = ref(false) //true: shows (Game) Result's component 
     const gameResults = ref({
         winState: false,
-        text: ''
+        text: '',
+        scoreboard: []
     })
     const winCount = ref(0)
     const questionText = ref('')
@@ -194,23 +199,34 @@
         var winState = winCount.value > lossCount
         var text = winState ? `Well done you got ${winCount.value} correct` : `Aww you got ${lossCount} wrong`
         console.log(winState, text)
-
         return { 
             winState: winState,
-            text: text
+            text: text,
+            scoreboard: scoreboard.value
         }
+    }
+
+    function addScore(questionNo, winResult, answer, givenAnswer) {
+        var score = {
+            questionNo: questionNo,
+            answer: answer,
+            givenAnswer: givenAnswer,
+            result: winResult
+        }
+        scoreboard.value.push(score)
     }
 
     //#endregion
 
     //#region Callbacks 
 
-    function handleAnswerResultCallback(winState) {
+    function handleAnswerResultCallback(roundOver) {
         console.log('round result event handled')
-        questionResults.value.winState = winState 
+        addScore(roundOver.questionNo, roundOver.winState, roundOver.answer, roundOver.givenAnswer)
+        questionResults.value.winState = roundOver.winState 
         questionResults.value.text = answer.value
         questionOver.value = true
-        if (winState) {
+        if (roundOver.winState) {
             winCount.value++
         }
     }

@@ -215,7 +215,7 @@
         "enabled": true,
         "rules" : {
             "allowHints": true,
-            "questionsPerGame": 10,
+            "questionsPerGame": 2,
             "answerButtonLimit": 8,
             "answerAlternatives": null
         },

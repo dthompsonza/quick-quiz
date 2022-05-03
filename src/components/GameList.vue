@@ -78,6 +78,7 @@
         localStorage.removeItem('data')
         localStorage.removeItem('expires')
         console.log('cache cleared')
+        window.location.reload();
     }
 
     function fetchDataFromInternet() {
