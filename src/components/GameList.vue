@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
     import { ref, onMounted } from 'vue'
-    import { sanitizeGameData } from '../helpers/sanitizer'
+    import { sanitizeGameData } from '../helpers/gameDataSanitizer'
 
     const emit = defineEmits(['loadGame'])
     const props = defineProps(['cacheDataMinutes'])

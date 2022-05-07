@@ -1,4 +1,14 @@
 
+/*
+    sanitizer.js
+
+    ensures objects contain expected properties with default data for those properties
+    that need to be defined.
+    for properties where data absolutely needs to be provided from external data source
+    we will catch missing data with gameDataValidator.js' validate() and prevent
+    incomplete/malformed/missing game data from being playable by the user.
+*/
+
 export function sanitizeGameData(uncleanGameData) {
     var gameData = {
         name: uncleanGameData.name,

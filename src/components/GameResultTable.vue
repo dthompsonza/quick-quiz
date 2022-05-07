@@ -13,8 +13,8 @@
                 <tr v-for="score in scoreboard">
                     <th>{{ score.questionNo }}</th>
                     <td>{{ score.givenAnswer }}</td>
-                    <td>{{ score.givenAnswer === score.answer ? "" : score.answer }}</td>
-                    <td>{{ score.result ? "✔" :"❌" }}</td>
+                    <td>{{ score.result ? "" : score.answer }}</td>
+                    <td>{{ score.result ? "✔" : "❌" }}</td>
                 </tr>
             </tbody>
         </table>
