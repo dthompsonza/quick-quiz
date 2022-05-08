@@ -23,11 +23,12 @@
     const emit = defineEmits(['loadGame'])
     const props = defineProps(['cacheDataMinutes'])
     const loading = ref(false)
+    const pointerData = ref(null)
     const data = ref(null)
     const error = ref(null)
 
-    onMounted(() => fetchData())
-
+    onMounted(async () => fetchData())
+    
     function clickPlayGame(gameId) {
         if (!data.value) {
             console.error('there is no game data to play', gameId)
@@ -41,7 +42,9 @@
         }
     }
 
-    function fetchData () {
+    async function fetchData () {
+        fetchDataFromInternet()
+        return
         //localStorage.clear() 
         var cachedData = getCache()
         if (cachedData == null) {
@@ -50,7 +53,7 @@
         }
         else {
             console.log('getting data from cache')
-            data.value = cachedData
+            pointerData.value = cachedData
         }
     }
 
@@ -81,26 +84,19 @@
         window.location.reload();
     }
 
-    function fetchDataFromInternet() {
-        loading.value = true
+    function fetchDataPointers() {
         return fetch('./data/public-game-data.json', {
             method: 'get'
         })
         .then(res => {
-        // a non-200 response code
-        if (!res.ok) {
-            // create error instance with HTTP status text
-            const newError = new Error(res.statusText)
-            newError.json = res.json()
-            throw newError
-        }
-
-        return res.json()
-        })
-        .then(json => {
-            // set the response data
-            data.value = json 
-            setCache(json)
+            // a non-200 response code
+            if (!res.ok) {
+                // create error instance with HTTP status text
+                const newError = new Error(res.statusText)
+                newError.json = res.json()
+                throw newError
+            }
+            return res.json()
         })
         .catch(err => {
             error.value = err
@@ -112,9 +108,46 @@
                 })
             }
         })
-        .then(() => {
-            loading.value = false
-        });
+    }
+
+    function fetchDataFromPointer(pointer) {
+        var gameDataPath = `./quiz-assets/${pointer.path}`
+        return fetch(gameDataPath, {
+            method: 'get'
+        })
+        .then(res => {
+            // a non-200 response code
+            if (!res.ok) {
+                // create error instance with HTTP status text
+                const newError = new Error(res.statusText)
+                newError.json = res.json()
+                throw newError
+            }
+            return res.json()
+        })
+        .catch(err => {
+            error.value = err
+            // In case a custom JSON error response was provided
+            if (err.json) {
+                return err.json.then(json => {
+                    // set the JSON response message
+                    error.value.message = json.message
+                })
+            }
+        })
+    }
+
+    async function fetchDataFromInternet() {
+        loading.value = true
+        data.value = []
+        var pointers = await fetchDataPointers();
+        for (var i = 0; i < pointers.length; i++) {
+            var gameData = await fetchDataFromPointer(pointers[i])
+            if (gameData !== null) {
+                data.value.push(gameData)
+            }
+        }
+        loading.value = false
     }
 
     function addMinutes(minutes) {

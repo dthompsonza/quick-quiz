@@ -1,32 +1,36 @@
 <template>
     <div>
-        <div class="answerLettersBlock">
-            <ButtonPanel 
-                name="givenAnswer"
-                :text="givenAnswer" 
-                :minLength="answerLength" />
-        </div>
-        <div class="answerPoolLettersBlock">
-            <ButtonPanel 
-                name="answerPool"
-                :text="alternativeAnswerChars" 
-                :maxLength="answerLength"
-                :canPress="true"
-                :toggleWipePressed="toggleAnswerPoolPressedButtons"
-                @button-pressed="answerPoolButtonCallback"
-                @button-unpressed="answerPoolButtonCallback" />
-        </div>
-        
-        <div>
-            <button @click="handleCheckAnswer">Send</button>
-            <button @click="handleClearAnswer">Clear</button>
-            <button @click="showHint" 
-                :disabled="hintVisible" 
-                v-if="rules.allowHints">Hint</button>
-        </div>
-        <div v-if="hintVisible" class="hint">
-            <p>{{ hint }}</p>
-        </div>
+        <center>
+            <div class="answerLettersBlock">
+                <ButtonPanel 
+                    name="givenAnswer"
+                    :text="givenAnswer" 
+                    :minLength="answerLength" />
+            </div>
+            <div class="answerPoolLettersBlock">
+                <ButtonPanel 
+                    name="answerPool"
+                    :text="alternativeAnswerChars" 
+                    :maxLength="answerLength"
+                    :canPress="true"
+                    :toggleWipePressed="toggleAnswerPoolPressedButtons"
+                    @button-pressed="answerPoolButtonCallback"
+                    @button-unpressed="answerPoolButtonCallback" />
+            </div>
+            
+            <div>
+                <button class="button" @click="handleCheckAnswer">Send</button>
+                <button class="button" @click="handleClearAnswer">Clear</button>
+                <button class="button" 
+                    @click="showHint" 
+                    :disabled="hintVisible" 
+                    v-if="rules.allowHints">Hint</button>
+            </div>
+            
+            <div v-if="hintVisible" class="hint">
+                <p>{{ hint }}</p>
+            </div>
+        </center>
     </div>
         
 </template>

@@ -1,11 +1,7 @@
 <template>
-    <div class="controls">
-        <span class="title is-3">{{ gameName }}</span>
-        <p>
-            <button @click="handleStartGame" :disabled="isPlaying">Start Game</button>
-            <button @click="handleStopGame" :disabled="!isPlaying">Stop Game</button>
-            <button @click="handleQuitGame" :disabled="isPlaying">Quit Game</button>
-        </p>
+    <div>
+        <span class="title is-3"><center>{{ gameName }}</center></span>
+        
     </div>
 
     <div class="box questionBlock" v-if="isPlaying && !gameOver && !questionOver">
@@ -17,6 +13,12 @@
             :questionCount="questionCount"
             :gameId="gameId"
         />
+
+        <Progress 
+            :max="progressMaxValue" 
+            :value="progressValue" 
+        />
+
         <Answer  
             :answer="answer"
             :hint="hint" 
@@ -24,10 +26,7 @@
             :rules="gameRules"
             @round-over="handleAnswerResultCallback" 
         />
-        <Progress 
-            :max="progressMaxValue" 
-            :value="progressValue" 
-        />
+        
     </div>
 
     <div class="questionResultBlock" v-if="isPlaying && !gameOver && questionOver">
@@ -42,6 +41,14 @@
             :gameOver="gameOver" 
             :gameResults="gameResults" 
         />
+    </div>
+
+    <div class="controls">
+        <p align="center">
+            <button class="button mx-1" @click="handleStartGame" :disabled="isPlaying">Start Game</button>
+            <button class="button mx-1" @click="handleStopGame" :disabled="!isPlaying">Stop Game</button>
+            <button class="button mx-1" @click="handleQuitGame" :disabled="isPlaying">Quit Game</button>
+        </p>
     </div>
 </template>
 

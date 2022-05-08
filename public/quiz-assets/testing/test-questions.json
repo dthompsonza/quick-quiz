@@ -1,0 +1,79 @@
+{
+  "name": "Test questions",
+  "uniqueid": "d3032b23-87ef-486f-8221-717717c01633",
+  "enabled": true,
+  "rules": {
+    "allowHints": true,
+    "questionsPerGame": 2,
+    "answerButtonLimit": 8,
+    "answerAlternatives": null
+  },
+  "questions": [
+    {
+      "questionImage": "bird.png",
+      "questionText": "What goes meow?",
+      "answer": "CAT",
+      "hint": "Its not a dog"
+    },
+    {
+      "questionImage": "bird.png",
+      "questionText": "What goes woof?",
+      "answer": "DOG",
+      "hint": "Its not a cat"
+    },
+    {
+      "questionImage": "bird.png",
+      "questionText": "What animal with feathers can fly?",
+      "answer": "BIRD",
+      "hint": "Chirp chirp"
+    },
+    {
+      "questionImage": "bird.png",
+      "questionText": "Black and white sea bird?",
+      "answer": "PENGUIN",
+      "hint": "Starts with a P"
+    },
+    {
+      "questionImage": "bird.png",
+      "questionText": "What shape is round?",
+      "answer": "CIRCLE",
+      "hint": "Like a hula-hoop"
+    },
+    {
+      "questionImage": "bird.png",
+      "questionText": "What does a chicken lay?",
+      "answer": "EGG",
+      "hint": "Yummy for breakfast"
+    },
+    {
+      "questionImage": null,
+      "questionText": "Mix Blue and Yellow?",
+      "answer": "GREEN",
+      "hint": "The colour of leaves"
+    },
+    {
+      "questionImage": null,
+      "questionText": "What color is snow?",
+      "answer": "WHITE",
+      "hint": null
+    },
+    {
+      "questionImage": null,
+      "questionText": "This is hard?",
+      "answer": "WOOD",
+      "hint": "Its made from trees"
+    },
+    {
+      "questionImage": null,
+      "questionText": "Green is the answer?",
+      "answer": "GREEN",
+      "hint": "Just type green"
+    }
+  ],
+  "metadata": {
+    "targetAges": [
+      5,
+      6
+    ]
+  }
+}
