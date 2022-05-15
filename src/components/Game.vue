@@ -14,10 +14,10 @@
             :gameId="gameId"
         />
 
-        <Progress 
+    <!--     <Progress 
             :max="progressMaxValue" 
             :value="progressValue" 
-        />
+        /> -->
 
         <Answer  
             :answer="answer"

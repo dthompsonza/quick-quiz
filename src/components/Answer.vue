@@ -1,27 +1,29 @@
 <template>
     <div>
         <center>
-            <div class="answerLettersBlock">
+            <div class="given-answer-block">
                 <ButtonPanel 
                     name="givenAnswer"
                     :text="givenAnswer" 
                     :minLength="answerLength" />
             </div>
-            <div class="answerPoolLettersBlock">
+            
+            <div class="answer-pool-block">
                 <ButtonPanel 
                     name="answerPool"
                     :text="alternativeAnswerChars" 
                     :maxLength="answerLength"
                     :canPress="true"
+                   
                     :toggleWipePressed="toggleAnswerPoolPressedButtons"
                     @button-pressed="answerPoolButtonCallback"
                     @button-unpressed="answerPoolButtonCallback" />
             </div>
             
             <div>
-                <button class="button" @click="handleCheckAnswer">Send</button>
-                <button class="button" @click="handleClearAnswer">Clear</button>
-                <button class="button" 
+                <button class="button mx-1" @click="handleCheckAnswer">Send</button>
+                <button class="button mx-1" @click="handleClearAnswer">Clear</button>
+                <button class="button mx-1" 
                     @click="showHint" 
                     :disabled="hintVisible" 
                     v-if="rules.allowHints">Hint</button>
@@ -142,13 +144,13 @@
 
 <style scoped>
 
-    .answerBlock
+    .given-answer-block
     {
-        background-color: #fff;
-        letter-spacing: 2px;
+        ignore-background-color: #fff;
+        ignore-letter-spacing: 2px;
         text-align: center;
         font-size: 54px;
-        width: 50%;
+        ignore-width: 50%;
         caret-color: transparent;
     }
 </style>

@@ -1,8 +1,8 @@
 <template>
     <div :class="componentClass">
-        <button v-for="(char, index) in displayChars" class="answerCharacter" 
+        <button v-for="(char, index) in displayChars" class="answer-character" 
             @click="buttonPressed(char, index)"
-            :class="{ pressed: isPressed(index) }">
+            :class="{ pressed: isPressed(index), buttonsClass }">
                 {{ formatDisplayChar(char) }}
         </button>
     </div>
@@ -11,12 +11,13 @@
 <script setup lang="ts">
     import { ref, computed, onMounted, watch } from 'vue'
 
-    const props = defineProps(['name', 'text', 'minLength', 'maxLength', 'toggleWipePressed', 'canPress'])
+    const props = defineProps(['name', 'text', 'minLength', 'maxLength', 'toggleWipePressed', 'canPress', 'buttonsClass'])
     const emit = defineEmits(['buttonPressed', 'buttonUnpressed'])
     const emptyChar = '\t'
     var pressedButtons = ref([])
 
-    const componentClass = computed(() => `buttonpanel-${props.name}`)
+    const componentClass = computed(() => props.name ? `qq-buttonpanel-${props.name.toLowerCase()}` : null)
+    const buttonsClass = computed(() => props.buttonsClass == null ? '' : props.buttonsClass)
     const displayChars = computed(() => {
             var chars = props.text ?? ''
             if (props.minLength ?? 0 > 0) {
@@ -103,7 +104,7 @@
 </script>
 
 <style scoped>
-    .answerCharacter {
+    .answer-character {
         margin: 5px;
         padding: 10px;
         min-width: 40px;
@@ -113,7 +114,7 @@
         border-radius: 0px;
     }
 
-    .answerCharacter.pressed {
+    .answer-character.pressed {
         background-color: goldenrod;
     }
 </style>
