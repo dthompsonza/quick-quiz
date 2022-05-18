@@ -1,0 +1,26 @@
+{
+  "name": "Tiny test",
+  "description": "",
+  "image": "",
+  "uniqueid": "cefcf176-6b4c-4243-bb71-b3d338abd0b8",
+  "enabled": false,
+  "questions": [
+    {
+      "questionText": "This is the question",
+      "answer": "ANS",
+      "hint": "ANSwer the question"
+    }
+  ],
+  "rules": {
+    "allowHints": true,
+    "questionsPerGame": 1,
+    "answerButtonLimit": 6,
+    "answerAlternatives": null
+  },
+  "metadata": {
+    "targetAges": [
+      5,
+      6
+    ]
+  }
+}

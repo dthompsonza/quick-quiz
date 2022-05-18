@@ -1,0 +1,210 @@
+{
+  "name": "Maths times tables 5 to 8",
+  "uniqueid": "8488c660-5b34-4147-a955-ece4bc77fdae",
+  "enabled": true,
+  "questions": [
+    {
+      "questionText": "5 x 1",
+      "answer": "5"
+    },
+    {
+      "questionText": "5 x 2",
+      "answer": "10"
+    },
+    {
+      "questionText": "5 x 3",
+      "answer": "15"
+    },
+    {
+      "questionText": "5 x 4",
+      "answer": "20"
+    },
+    {
+      "questionText": "5 x 5",
+      "answer": "25"
+    },
+    {
+      "questionText": "5 x 6",
+      "answer": "30"
+    },
+    {
+      "questionText": "5 x 7",
+      "answer": "35"
+    },
+    {
+      "questionText": "5 x 8",
+      "answer": "40"
+    },
+    {
+      "questionText": "5 x 9",
+      "answer": "45"
+    },
+    {
+      "questionText": "5 x 10",
+      "answer": "50"
+    },
+    {
+      "questionText": "5 x 11",
+      "answer": "55"
+    },
+    {
+      "questionText": "5 x 12",
+      "answer": "60"
+    },
+    {
+      "questionText": "6 x 1",
+      "answer": "6"
+    },
+    {
+      "questionText": "6 x 2",
+      "answer": "12"
+    },
+    {
+      "questionText": "6 x 3",
+      "answer": "18"
+    },
+    {
+      "questionText": "6 x 4",
+      "answer": "24"
+    },
+    {
+      "questionText": "6 x 5",
+      "answer": "30"
+    },
+    {
+      "questionText": "6 x 6",
+      "answer": "36"
+    },
+    {
+      "questionText": "6 x 7",
+      "answer": "42"
+    },
+    {
+      "questionText": "6 x 8",
+      "answer": "48"
+    },
+    {
+      "questionText": "6 x 9",
+      "answer": "54"
+    },
+    {
+      "questionText": "6 x 10",
+      "answer": "60"
+    },
+    {
+      "questionText": "6 x 11",
+      "answer": "66"
+    },
+    {
+      "questionText": "6 x 12",
+      "answer": "72"
+    },
+    {
+      "questionText": "7 x 1",
+      "answer": "7"
+    },
+    {
+      "questionText": "7 x 2",
+      "answer": "14"
+    },
+    {
+      "questionText": "7 x 3",
+      "answer": "21"
+    },
+    {
+      "questionText": "7 x 4",
+      "answer": "28"
+    },
+    {
+      "questionText": "7 x 5",
+      "answer": "35"
+    },
+    {
+      "questionText": "7 x 6",
+      "answer": "42"
+    },
+    {
+      "questionText": "7 x 7",
+      "answer": "49"
+    },
+    {
+      "questionText": "7 x 8",
+      "answer": "56"
+    },
+    {
+      "questionText": "7 x 9",
+      "answer": "63"
+    },
+    {
+      "questionText": "7 x 10",
+      "answer": "70"
+    },
+    {
+      "questionText": "7 x 11",
+      "answer": "77"
+    },
+    {
+      "questionText": "7 x 12",
+      "answer": "84"
+    },
+    {
+      "questionText": "8 x 1",
+      "answer": "8"
+    },
+    {
+      "questionText": "8 x 2",
+      "answer": "16"
+    },
+    {
+      "questionText": "8 x 3",
+      "answer": "24"
+    },
+    {
+      "questionText": "8 x 4",
+      "answer": "32"
+    },
+    {
+      "questionText": "8 x 5",
+      "answer": "40"
+    },
+    {
+      "questionText": "8 x 6",
+      "answer": "48"
+    },
+    {
+      "questionText": "8 x 7",
+      "answer": "56"
+    },
+    {
+      "questionText": "8 x 8",
+      "answer": "64"
+    },
+    {
+      "questionText": "8 x 9",
+      "answer": "72"
+    },
+    {
+      "questionText": "8 x 10",
+      "answer": "80"
+    },
+    {
+      "questionText": "8 x 11",
+      "answer": "88"
+    },
+    {
+      "questionText": "8 x 12",
+      "answer": "96"
+    }
+  ],
+  "rules": {
+    "questionsPerGame": 10,
+    "answerAlternatives": "11223344556677889900",
+    "answerButtonLimit": 5
+  },
+  "metadata": {
+    "targetAges": [
+      5,
+      6
+    ]
+  }
+}

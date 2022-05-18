@@ -1,0 +1,22 @@
+{
+    "name": "",
+    "uniqueid": "",
+    "enabled": false,
+    "questions": [
+        {
+            "questionImage": "",
+            "questionText": "",
+            "answer": "",
+            "hint": ""
+        }
+    ],
+    "rules": {
+        "allowHints": false,
+        "questionsPerGame": 3,
+        "answerButtonLimit": 5,
+        "answerAlternatives": null
+    },
+    "metadata": {
+        "targetAges": [5, 6]
+    }
+}
