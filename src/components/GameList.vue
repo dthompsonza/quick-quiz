@@ -1,18 +1,25 @@
 <template>
     <div>
-        <div v-if="!loading && data && data.length">
-            <button v-for="game of data" class="button is-fullwidth is-rounded" @click="clickPlayGame(game.uniqueid)">
-                {{ game.name }} 
-            </button> 
-            
-        </div>
         <p v-if="loading">
             Still loading..
         </p>
         <p v-if="error">
             {{ error }}
         </p>
-        <button @click="clearCache" class="button is-small is-rounded">Clear Cache</button>
+        <div v-if="!loading && data && data.length">
+            <div class="tile is-ancestor">
+                <div v-for="game of data" class="tile is-parent">
+                    <div class="tile box is-child">
+                        <p class="title is-5">{{ game.name }}</p>
+                        <p v-html="getGameDescription(game)" style="width:50%;" class="do-not-wrap"></p>
+                        <button @click="clickPlayGame(game.uniqueid)" class="button  is-success is-pulled-right">Play</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            <button @click="clearCache" class="button is-small is-rounded">Clear Cache</button>
+        </p>
     </div>
 </template>
 
@@ -29,6 +36,18 @@
 
     onMounted(async () => fetchData())
     
+    function getGameDescription(game) {
+        var result = '<b>Questions:</b> ' + game.rules.questionsPerGame + '<br/>'
+        
+        if (game.metadata?.targetAges?.length > 0) {
+            result += '<b>Ages:</b> ' + game.metadata.targetAges.join(', ') + '<br/>'
+        }
+        if (result.length == 0) {
+            return 'No description.'
+        }
+        return result
+    }
+
     function clickPlayGame(gameId) {
         if (!data.value) {
             console.error('there is no game data to play', gameId)

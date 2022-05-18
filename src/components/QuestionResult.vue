@@ -1,9 +1,14 @@
 <template>
     <div>
-        <h1>{{ headerText }}</h1>
-        <p>{{ userText }}</p>
-        <ButtonPanel :text="$props.answer"/>
-        <button @click="handleOkayClick">Okay</button>
+        <center>
+            <h1>{{ headerText }}</h1>
+            <p>{{ userText }}</p>
+            <ButtonPanel 
+                :text="$props.answer"
+                buttonsClass="given-answer-block"
+            />
+            <button @click="handleOkayClick" class="button">Okay</button>
+        </center>
     </div>
 </template>
 

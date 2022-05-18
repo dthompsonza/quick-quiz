@@ -1,11 +1,12 @@
 <template>
     <div>
         <center>
-            <div class="given-answer-block">
+            <div >
                 <ButtonPanel 
                     name="givenAnswer"
                     :text="givenAnswer" 
-                    :minLength="answerLength" />
+                    :minLength="answerLength"
+                    buttonsClass="given-answer-block" />
             </div>
             
             <div class="answer-pool-block">
@@ -144,13 +145,5 @@
 
 <style scoped>
 
-    .given-answer-block
-    {
-        ignore-background-color: #fff;
-        ignore-letter-spacing: 2px;
-        text-align: center;
-        font-size: 54px;
-        ignore-width: 50%;
-        caret-color: transparent;
-    }
+    
 </style>

@@ -13,27 +13,20 @@
 
   <div class="section">
     <div class="container">
-      <div class="card">
-        <div class="card-image">
-          <figure class="image">
-            <center>
-              <img src="./assets/img/quickquizlogo2.png" class="x-limit-width" v-if="!isGameLoaded"/>
-            </center>
-          </figure>
-        </div>
-        <div class="card-content">
-          <GameList 
-            v-if="!isGameLoaded"
-            :cache-data-minutes="10"
-            @load-game="loadGame"
-          />
-          <Game 
-            v-if="isGameLoaded" 
-            :game-setup="gameData" 
-            @unload-game="unloadGame" 
-          />
-        </div>
+      <img src="./assets/img/quickquizlogo2.png" class="x-limit-width" v-if="!isGameLoaded"/>
+      <div class="card-content">
+        <GameList 
+          v-if="!isGameLoaded"
+          :cache-data-minutes="10"
+          @load-game="loadGame"
+        />
+        <Game 
+          v-if="isGameLoaded" 
+          :game-setup="gameData" 
+          @unload-game="unloadGame" 
+        />
       </div>
+
     </div>
   </div>
 </template>

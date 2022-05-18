@@ -14,11 +14,6 @@
             :gameId="gameId"
         />
 
-    <!--     <Progress 
-            :max="progressMaxValue" 
-            :value="progressValue" 
-        /> -->
-
         <Answer  
             :answer="answer"
             :hint="hint" 

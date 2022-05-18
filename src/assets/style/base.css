@@ -11,3 +11,15 @@
     height: 70px;
     min-width: 55px;
 }
+
+.do-not-wrap {
+    white-space: nowrap;
+}
+
+.given-answer-block
+{
+    background-color: #fff;
+    text-align: center;
+    font-size: 54px;
+    caret-color: transparent;
+}
