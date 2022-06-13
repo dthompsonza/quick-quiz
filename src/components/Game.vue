@@ -1,16 +1,20 @@
 <template>
-    <div>
-        <span class="title is-3"><center>{{ gameName }}</center></span>
-        
+    <div class="block">
+        <span class="title is-3">{{ gameName }}</span>
+        <p><small>{{ gameDescription }}</small></p>
+    </div>
+
+    <div class="block" v-if="!isPlaying">
+        <button class="button is-large is-primary mx-1" @click="handleStartGame" :disabled="isPlaying">Start Game</button>
     </div>
 
     <div class="box questionBlock" v-if="isPlaying && !gameOver && !questionOver">
 
         <Question 
-            :questionText="questionText" 
-            :questionImage="questionImage" 
-            :questionNumber="questionNumber"
-            :questionCount="questionCount"
+            :text="questionText" 
+            :image="questionImage" 
+            :number="questionNumber"
+            :count="questionCount"
             :gameId="gameId"
         />
 
@@ -28,7 +32,9 @@
         <QuestionResult 
             :win="questionResults.winState" 
             :answer="questionResults.text" 
-            @okay-clicked="closeQuestionResultAndTick" />
+            @okay-clicked="closeQuestionResultAndTick" 
+            :class="{ questionResultWin: questionResults.winState, questionResultLoss: !questionResults.winState }"
+        />
     </div>
 
     <div class="gameResultBlock" v-if="!isPlaying && gameOver">
@@ -38,12 +44,8 @@
         />
     </div>
 
-    <div class="controls">
-        <p align="center">
-            <button class="button mx-1" @click="handleStartGame" :disabled="isPlaying">Start Game</button>
-            <button class="button mx-1" @click="handleStopGame" :disabled="!isPlaying">Stop Game</button>
-            <button class="button mx-1" @click="handleQuitGame" :disabled="isPlaying">Quit Game</button>
-        </p>
+    <div class="block">
+        <button class="button is-medium is-danger is-light mx-1" @click="handleQuitGame">Quit</button>
     </div>
 </template>
 
@@ -54,7 +56,6 @@
     import Answer from './Answer.vue'
     import GameResult from './GameResult.vue'
     import QuestionResult from './QuestionResult.vue'
-    import Progress from './Progress.vue'
 
     const emit = defineEmits(['unloadGame'])
     const props = defineProps(['gameSetup'])
@@ -84,9 +85,8 @@
     const questionNumber = ref(null)
    
     const gameName = computed(() => props.gameSetup.name)
+    const gameDescription = computed(() => props.gameSetup.description)
     const questionCount = computed(() => questions.value.length)
-    const progressMaxValue = computed(() => !isPlaying ? 0 : questions.value.length)
-    const progressValue = computed(() => !isPlaying.value ? 0 : questionIndex.value + 1)
 
     //#region Button events
 
@@ -94,11 +94,8 @@
         startGame()
     }
 
-    function handleStopGame() {
-        stopGame(true)
-    }
-
     function handleQuitGame() {
+        stopGame(true)
         emit('unloadGame')
     }
 
@@ -177,7 +174,7 @@
         }
     }
 
-    function stopGame(isCancelled = false) {
+    function stopGame(isUserCancelled = false) {
         console.log('game over')
         var gameOverResults = calculateGameResults()
         isPlaying.value = false 
@@ -189,7 +186,7 @@
         questions.value = []
         gameRules.value = null
         gameId.value = null
-        if (isCancelled) {
+        if (isUserCancelled) {
             return
         }
         gameResults.value = gameOverResults
@@ -243,8 +240,18 @@
 </script>
     
 <style scoped>
+
+    .block {
+        width: 100%;
+        min-height: 30px;
+        padding: 20px;
+        margin: 30px auto;
+        border-radius: 10px;
+        text-align: center;
+    }
+
     .questionBlock {
-        width: 80%;
+        width: 100%;
         min-height: 100px;
         padding: 20px;
         margin: 30px auto;
@@ -253,12 +260,19 @@
     }
 
     .questionResultBlock {
-        width: 80%;
+        width: 95%;
         min-height: 100px;
         padding: 20px;
         margin: 30px auto;
-        background-color: #ad11ff;
         border-radius: 10px;
+    }
+
+    .questionResultBlock, .questionResultLoss {
+        background-color: #d32b1f;
+    }
+
+    .questionResultBlock, .questionResultWin {
+        background-color: #0fa50f;
     }
 
     .gameResultBlock {

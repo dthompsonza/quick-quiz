@@ -12,6 +12,7 @@
 export function sanitizeGameData(uncleanGameData) {
     var gameData = {
         name: uncleanGameData.name,
+        description: uncleanGameData.description,
         uniqueid: uncleanGameData.uniqueid,
         enabled: uncleanGameData.enabled,
         rules: sanitizeRules(uncleanGameData.rules),

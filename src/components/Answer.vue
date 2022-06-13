@@ -1,12 +1,13 @@
 <template>
     <div>
         <center>
-            <div >
+            <div>
                 <ButtonPanel 
                     name="givenAnswer"
                     :text="givenAnswer" 
                     :minLength="answerLength"
-                    buttonsClass="given-answer-block" />
+                    buttonsClass="given-answer-block" 
+                />
             </div>
             
             <div class="answer-pool-block">
@@ -15,10 +16,11 @@
                     :text="alternativeAnswerChars" 
                     :maxLength="answerLength"
                     :canPress="true"
-                   
                     :toggleWipePressed="toggleAnswerPoolPressedButtons"
                     @button-pressed="answerPoolButtonCallback"
-                    @button-unpressed="answerPoolButtonCallback" />
+                    @button-unpressed="answerPoolButtonCallback" 
+                    buttonClass="key__button"
+                />
             </div>
             
             <div>
@@ -27,7 +29,8 @@
                 <button class="button mx-1" 
                     @click="showHint" 
                     :disabled="hintVisible" 
-                    v-if="rules.allowHints">Hint</button>
+                    v-if="rules.allowHints">Hint
+                </button>
             </div>
             
             <div v-if="hintVisible" class="hint">

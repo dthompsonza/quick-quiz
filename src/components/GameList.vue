@@ -12,7 +12,7 @@
                     <div class="tile box is-child">
                         <p class="title is-5">{{ game.name }}</p>
                         <p v-html="getGameDescription(game)" style="width:50%;" class="do-not-wrap"></p>
-                        <button @click="clickPlayGame(game.uniqueid)" class="button  is-success is-pulled-right">Play</button>
+                        <button @click="clickPlayGame(game.uniqueid)" class="button is-success is-pulled-right">Play</button>
                     </div>
                 </div>
             </div>
@@ -41,6 +41,9 @@
         
         if (game.metadata?.targetAges?.length > 0) {
             result += '<b>Ages:</b> ' + game.metadata.targetAges.join(', ') + '<br/>'
+        }
+        if (game.description?.length > 0) {
+            result += "<small>" + game.description + "</small>"
         }
         if (result.length == 0) {
             return 'No description.'

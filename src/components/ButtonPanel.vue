@@ -1,23 +1,30 @@
 <template>
-    <div :class="componentClass">
-        <button v-for="(char, index) in displayChars" class="answer-character" 
-            @click="buttonPressed(char, index)"
-            :class="{ pressed: isPressed(index), buttonsClass }">
-                {{ formatDisplayChar(char) }}
-        </button>
+    <div class="component-style" :class="componentClass">
+        <div>
+            <button v-for="(char, index) in displayChars"
+                :class="[buttonClass, { pressed: isPressed(index) }]" 
+                class="answer-character"
+                @click="buttonPressed(char, index)"
+            > 
+                    {{ formatDisplayChar(char) }}
+
+                    
+            </button>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
+//:class="buttonsClass"
     import { ref, computed, onMounted, watch } from 'vue'
 
-    const props = defineProps(['name', 'text', 'minLength', 'maxLength', 'toggleWipePressed', 'canPress', 'buttonsClass'])
+    const props = defineProps(['name', 'text', 'minLength', 'maxLength', 'toggleWipePressed', 'canPress', 'buttonClass'])
     const emit = defineEmits(['buttonPressed', 'buttonUnpressed'])
     const emptyChar = '\t'
     var pressedButtons = ref([])
 
     const componentClass = computed(() => props.name ? `qq-buttonpanel-${props.name.toLowerCase()}` : null)
-    const buttonsClass = computed(() => props.buttonsClass == null ? '' : props.buttonsClass)
+    const buttonClass = computed(() => props.buttonClass == null ? '' : props.buttonClass)
     const displayChars = computed(() => {
             var chars = props.text ?? ''
             if (props.minLength ?? 0 > 0) {
@@ -104,6 +111,13 @@
 </script>
 
 <style scoped>
+    .component-style {
+        padding: 10px;
+        margin: 5px auto;
+        display: inline-block;
+       /* white-space: nowrap;*/
+    }
+
     .answer-character {
         margin: 5px;
         padding: 10px;
@@ -115,6 +129,7 @@
     }
 
     .answer-character.pressed {
-        background-color: goldenrod;
+        background-color: goldenrod !important; 
+        background: inherit;
     }
 </style>
